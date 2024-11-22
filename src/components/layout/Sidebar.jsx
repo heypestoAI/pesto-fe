@@ -66,6 +66,7 @@ function Sidebar() {
           boxSizing: 'border-box',
           borderRight: '1px solid #eee',
           backgroundColor: 'white',
+          top: "78px",
         },
       }}
     >

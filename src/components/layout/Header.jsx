@@ -89,9 +89,9 @@ function Header() {
             color: '#333'
           }}
         >
-          Products
+          {/* Products */}
         </Typography>
-
+        <Box sx={{ flexGrow: 1 }} />
         <Search>
           <SearchIconWrapper>
             <SearchIcon />
@@ -102,39 +102,39 @@ function Header() {
           />
         </Search>
 
-        <Box sx={{ flexGrow: 1 }} />
-
-        <IconButton size="large" color="inherit">
+        <IconButton size="large" color="inherit" sx={{mt: "10px"}}>
           <Badge badgeContent={4} color="error">
             <NotificationsOutlined />
           </Badge>
         </IconButton>
 
-        <Box sx={{ ml: 2 }}>
+        <Box sx={{ ml: 2, display: 'flex' }}>
           <IconButton onClick={handleMenu}>
             <Avatar src="/path-to-avatar.jpg" />
           </IconButton>
-          <Typography
-            variant="subtitle1"
-            component="span"
-            sx={{ ml: 1, color: '#333' }}
-          >
-            {user?.name || 'User'}
+          <Typography component="div" sx={{display: 'flex', flexDirection: 'column', justifyContent: 'center'}}>
+            <Typography
+              variant="subtitle1"
+              component="span"
+              sx={{color: '#333', marginBottom: '-4px' }}
+            >
+              {user?.name || 'Ayushi'}
+            </Typography>
+            <Typography
+              variant="body2"
+              component="div"
+              sx={{ color: '#666', fontSize: '12px' }}
+            >
+              Admin
+            </Typography>
+            <Menu
+              anchorEl={anchorEl}
+              open={Boolean(anchorEl)}
+              onClose={handleClose}
+            >
+              <MenuItem onClick={handleLogout}>Logout</MenuItem>
+            </Menu>
           </Typography>
-          <Typography
-            variant="body2"
-            component="div"
-            sx={{ color: '#666' }}
-          >
-            Founder
-          </Typography>
-          <Menu
-            anchorEl={anchorEl}
-            open={Boolean(anchorEl)}
-            onClose={handleClose}
-          >
-            <MenuItem onClick={handleLogout}>Logout</MenuItem>
-          </Menu>
         </Box>
       </Toolbar>
     </AppBar>
