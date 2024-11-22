@@ -29,6 +29,7 @@ export const processIngredientData = (ingredientData) => {
                 Price: item.Price
             };
         }
+        return acc;
     }, {});
 
     console.log(groupedByIngredient);

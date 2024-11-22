@@ -14,6 +14,7 @@ import {
   TableRow,
   LinearProgress
 } from '@mui/material';
+import { useNavigate } from 'react-router-dom'; // Import useNavigate
 import {
   BarChart,
   Bar,
@@ -31,14 +32,25 @@ import {
 import { TrendingUp, TrendingDown } from '@mui/icons-material';
 import Layout from '../components/layout/Layout';
 import { useExcelData } from '../contexts/ExcelDataContext';
+import CogsVsSalesChart from '../components/dashboard/CogsVsSalesChart';
+import RevenueByChannelChart from '../components/dashboard/RevenueByChannelChart';
+import DailyCogsInsightsChart from '../components/dashboard/DailyCogsInsightsChart';
+
+
+
 
 
 function DashboardPage() {
   const [dashboardData, setDashboardData] = useState(null);
   const [loading, setLoading] = useState(true);
   const { excelData } = useExcelData();
+  const navigate = useNavigate(); // Initialize navigate
 
   useEffect(() => {
+    if(!excelData) {
+        // navigate('/upload');
+        // TODO: Uncomment the above later so that the navigation can happen
+    }
     // Fetch data from localStorage or your state management solution
     const storedData = localStorage.getItem('excelData');
     if (storedData) {
@@ -49,7 +61,7 @@ function DashboardPage() {
   }, []);
 
   const processData = (data) => {
-    console.log(excelData);
+    console.log('excelData', excelData);
     // Process your Excel data here to match the dashboard requirements
     setDashboardData({
       dailySummary: {
@@ -151,6 +163,10 @@ function DashboardPage() {
           </Grid>
         </Grid>
 
+        <CogsVsSalesChart data={excelData.cogs_sales_monthly} />
+        <RevenueByChannelChart data={excelData.cogs_sales_monthly} />
+        <DailyCogsInsightsChart data={excelData.cogs_sales_weekly} />
+
         {/* COGS vs Sales Chart */}
         <Grid container spacing={3}>
           <Grid item xs={12} md={8}>
@@ -174,7 +190,7 @@ function DashboardPage() {
 
           {/* Daily COGS Insights */}
           <Grid item xs={12} md={4}>
-            <Paper sx={{ p: 2, height: '100%' }}>
+            <Paper sx={{ p: 2, height: '100%', boxSizing: 'border-box' }}>
               <Typography variant="h6" gutterBottom>
                 Daily COGS Insights
               </Typography>

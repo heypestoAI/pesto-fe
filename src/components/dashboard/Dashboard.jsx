@@ -14,7 +14,7 @@ function Dashboard() {
   }, []);
 
   const ChartCard = ({ title, children }) => (
-    <Paper sx={{ p: 2, height: '100%' }}>
+    <Paper sx={{ p: 2, height: '100%', boxSizing: "border-box"}}>
       <Typography variant="h6" gutterBottom>
         {title}
       </Typography>

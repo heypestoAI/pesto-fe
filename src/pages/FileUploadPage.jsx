@@ -28,6 +28,20 @@ import { useNavigate } from 'react-router-dom';
 import { useExcelData } from '../contexts/ExcelDataContext';
 import { saveAs } from 'file-saver';
 import { processRecipeData, processIngredientData } from '../utils/dataProcessing';
+import { FOCUSABLE_SELECTOR } from '@testing-library/user-event/dist/utils';
+
+const saveJsonToFile = (data, sheetName) => {
+    const jsonString = JSON.stringify(data, null, 2);
+    const blob = new Blob([jsonString], { type: 'application/json' });
+    saveAs(blob, `${sheetName}_data.json`);
+    console.log(`${sheetName}_data.json saved`);
+  };
+
+// Function to check if a value is an Excel date
+function isExcelDate(value) {
+    return value && typeof value === 'number' && !isNaN(value) && 
+           value >= 1 && value < 2958466; // Upper limit to avoid treating large numbers as dates
+}
 
 const validateExcelFile = async (file) => {
     return new Promise((resolve, reject) => {
@@ -38,16 +52,25 @@ const validateExcelFile = async (file) => {
           const data = new Uint8Array(e.target.result);
           const workbook = XLSX.read(data, { type: 'array' });
           
-          if (workbook.SheetNames.length !== 4) {
+          if (workbook.SheetNames.length !== 6) {
             reject(new Error('Excel file must contain exactly four sheets'));
             return;
           }
 
           const allData = {};
-
+        
         workbook.SheetNames.forEach((sheetName) => {
             const worksheet = workbook.Sheets[sheetName];
-            const jsonData = XLSX.utils.sheet_to_json(worksheet);
+            const dateColumns = ['Date']; // Replace with your date column names
+            const jsonData = XLSX.utils.sheet_to_json(worksheet, {
+                raw: true,  // Keep original data types for non-date fields
+                transform: function(value, name) {
+                    // Only transform if it's a date field
+                    if (dateColumns.includes(name)) {
+                        return new Date(Math.round((value - 25569) * 86400 * 1000));
+                    }
+                    return value;  // Return original value for non-date fields
+                }});
             if (sheetName === 'Recipes') {
               allData[sheetName] = processRecipeData(jsonData);
             } else if (sheetName === 'Ingredients') {
@@ -57,9 +80,8 @@ const validateExcelFile = async (file) => {
                 allData[sheetName] = jsonData;
             }
         });
-        console.log(allData);
           
-          resolve(workbook);
+          resolve(allData);
         } catch (error) {
           reject(new Error('Error processing file'));
         }
@@ -81,12 +103,6 @@ function FileUploadPage() {
   const { updateExcelData } = useExcelData();
   const gotoDashboardRef = useRef(null);
 
-  const saveJsonToFile = (data, sheetName) => {
-    const jsonString = JSON.stringify(data, null, 2);
-    const blob = new Blob([jsonString], { type: 'application/json' });
-    saveAs(blob, `${sheetName}_data.json`);
-    console.log(`${sheetName}_data.json saved`);
-  };
 
   const handleFile = async (file) => {
     if (!file) return;
