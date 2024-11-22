@@ -3,45 +3,54 @@ import { ThemeProvider, createTheme } from '@mui/material';
 import { AuthProvider } from './contexts/AuthContext';
 import Layout from './components/layout/Layout';
 import Login from './components/auth/Login';
-import Dashboard from './components/dashboard/Dashboard';
-import FileUpload from './components/upload/FileUpload';
-import ProductDashboard from './components/product/ProductDashboard';
+import Dashboard from './pages/DashboardPage';
+import Products from './components/product/ProductDashboard';
 import Chat from './components/chat/Chat';
-import PrivateRoute from './components/auth/PrivateRoute';
+import FileUploadPage from './pages/FileUploadPage';
+import { ExcelDataProvider } from './contexts/ExcelDataContext';
 
 const theme = createTheme({
-  // Customize your theme here
+  typography: {
+    fontFamily: '"Inter", "Helvetica", "Arial", sans-serif',
+  },
+  palette: {
+    primary: {
+      main: '#00B517',
+    },
+  },
 });
 
 function App() {
   return (
     <ThemeProvider theme={theme}>
-      <AuthProvider>
-        <Router>
-          <Routes>
-            <Route path="/login" element={<Login />} />
-            <Route path="/dashboard" element={<Dashboard />} />
-                      <Route path="/upload" element={<FileUpload />} />
-                      <Route path="/products" element={<ProductDashboard />} />
-                      <Route path="/chat" element={<Chat />} />
-                      <Route path="/" element={<Navigate to="/dashboard" replace />} />
-            <Route
-              path="/"
-              element={
-                  <Layout>
-                    <Routes>
-                      <Route path="/dashboard" element={<Dashboard />} />
-                      <Route path="/upload" element={<FileUpload />} />
-                      <Route path="/products" element={<ProductDashboard />} />
-                      <Route path="/chat" element={<Chat />} />
-                      <Route path="/" element={<Navigate to="/dashboard" replace />} />
-                    </Routes>
-                  </Layout>
-              }
-            />
-          </Routes>
-        </Router>
-      </AuthProvider>
+      <ExcelDataProvider>
+        <AuthProvider>
+          <Router>
+            <Routes>
+              <Route path="/login" element={<Login />} />
+              <Route
+                path="/dashboard"
+                element={
+                
+                    <Dashboard />
+                 
+                }
+              />
+              <Route
+                path="/upload"
+                element={
+                
+                    <FileUploadPage />
+                 
+                }
+              />
+              <Route path="/products" element={<Products />} />
+              <Route path="/chat" element={<Chat />} />
+              <Route path="/" element={<Navigate to="/dashboard" replace />} />
+            </Routes>
+          </Router>
+        </AuthProvider>
+      </ExcelDataProvider>
     </ThemeProvider>
   );
 }
