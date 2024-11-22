@@ -35,9 +35,7 @@ import { useExcelData } from '../contexts/ExcelDataContext';
 import CogsVsSalesChart from '../components/dashboard/CogsVsSalesChart';
 import RevenueByChannelChart from '../components/dashboard/RevenueByChannelChart';
 import DailyCogsInsightsChart from '../components/dashboard/DailyCogsInsightsChart';
-
-
-
+import SuppliersMapChart from '../components/dashboard/SuppliersMapChart';
 
 
 function DashboardPage() {
@@ -166,6 +164,7 @@ function DashboardPage() {
         <CogsVsSalesChart data={excelData.cogs_sales_monthly} />
         <RevenueByChannelChart data={excelData.cogs_sales_monthly} />
         <DailyCogsInsightsChart data={excelData.cogs_sales_weekly} />
+        <SuppliersMapChart suppliersData={excelData.suppliers} />
 
         {/* COGS vs Sales Chart */}
         <Grid container spacing={3}>
@@ -187,56 +186,6 @@ function DashboardPage() {
               </ResponsiveContainer>
             </Paper>
           </Grid>
-
-          {/* Daily COGS Insights */}
-          <Grid item xs={12} md={4}>
-            <Paper sx={{ p: 2, height: '100%', boxSizing: 'border-box' }}>
-              <Typography variant="h6" gutterBottom>
-                Daily COGS Insights
-              </Typography>
-              <ResponsiveContainer width="100%" height={250}>
-                <PieChart>
-                  <Pie
-                    data={[
-                      { name: 'Ingredients', value: 45 },
-                      { name: 'Labour', value: 45 },
-                      { name: 'Other', value: 10 }
-                    ]}
-                    cx="50%"
-                    cy="50%"
-                    innerRadius={60}
-                    outerRadius={80}
-                    fill="#82ca9d"
-                    dataKey="value"
-                    label
-                  />
-                  <Tooltip />
-                  <Legend />
-                </PieChart>
-              </ResponsiveContainer>
-            </Paper>
-          </Grid>
-
-          {/* Revenue by Channel */}
-          <Grid item xs={12}>
-            <Paper sx={{ p: 2 }}>
-              <Typography variant="h6" gutterBottom>
-                Revenue by Channel
-              </Typography>
-              <ResponsiveContainer width="100%" height={300}>
-                <BarChart data={dashboardData.revenueByChannel}>
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="month" />
-                  <YAxis />
-                  <Tooltip />
-                  <Legend />
-                  <Bar dataKey="online" fill="#8884d8" name="Online Sales" />
-                  <Bar dataKey="offline" fill="#82ca9d" name="Offline Sales" />
-                </BarChart>
-              </ResponsiveContainer>
-            </Paper>
-          </Grid>
-
           {/* Top Products Table */}
           <Grid item xs={12}>
             <Paper sx={{ p: 2 }}>
