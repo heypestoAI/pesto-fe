@@ -5,6 +5,7 @@ import Layout from './components/layout/Layout';
 import Login from './components/auth/Login';
 import Dashboard from './pages/DashboardPage';
 import Products from './pages/Products';
+import ChatPage from './pages/ChatPage';
 import Chat from './components/chat/Chat';
 import FileUploadPage from './pages/FileUploadPage';
 import { ExcelDataProvider } from './contexts/ExcelDataContext';
@@ -45,7 +46,7 @@ function App() {
                 }
               />
               <Route path="/products" element={<Products />} />
-              <Route path="/chat" element={<Chat />} />
+              <Route path="/chat" element={<ChatPage />} />
               <Route path="/" element={<Navigate to="/dashboard" replace />} />
             </Routes>
           </Router>

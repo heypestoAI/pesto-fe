@@ -14,7 +14,8 @@ function Layout({ children }) {
           p: 3,
           mt: 8,
           backgroundColor: '#f5f5f5',
-          minHeight: '100vh',
+          height: 'calc(100vh - 64px)',
+          boxSizing: 'border-box'
         }}
       >
         {children}

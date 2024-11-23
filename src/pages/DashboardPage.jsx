@@ -46,19 +46,19 @@ function DashboardPage() {
 
   useEffect(() => {
     if(!excelData) {
-        // navigate('/upload');
-        // TODO: Uncomment the above later so that the navigation can happen
+        navigate('/upload');
     }
+    processData();
     // Fetch data from localStorage or your state management solution
     const storedData = localStorage.getItem('excelData');
-    if (storedData) {
-      const parsedData = JSON.parse(storedData);
-      processData(parsedData);
-    }
+    // if (storedData) {
+    //   const parsedData = JSON.parse(storedData);
+    //   processData(parsedData);
+    // }
     setLoading(false);
   }, []);
 
-  const processData = (data) => {
+  const processData = () => {
     console.log('excelData', excelData);
     // Process your Excel data here to match the dashboard requirements
     setDashboardData({
