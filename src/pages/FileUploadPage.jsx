@@ -73,6 +73,7 @@ const validateExcelFile = async (file) => {
                 }});
             if (sheetName === 'Recipes') {
               allData[sheetName] = processRecipeData(jsonData);
+              console.log(processRecipeData(jsonData));
             } else if (sheetName === 'Ingredients') {
               allData[sheetName] = processIngredientData(jsonData);
             }

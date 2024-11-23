@@ -4,7 +4,7 @@ import { AuthProvider } from './contexts/AuthContext';
 import Layout from './components/layout/Layout';
 import Login from './components/auth/Login';
 import Dashboard from './pages/DashboardPage';
-import Products from './components/product/ProductDashboard';
+import Products from './pages/Products';
 import Chat from './components/chat/Chat';
 import FileUploadPage from './pages/FileUploadPage';
 import { ExcelDataProvider } from './contexts/ExcelDataContext';
