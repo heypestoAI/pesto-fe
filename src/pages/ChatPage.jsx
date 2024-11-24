@@ -6,10 +6,6 @@ import AttachFileIcon from '@mui/icons-material/AttachFile';
 import Layout from "../components/layout/Layout";
 import { generateResponse } from '../utils/apiUtils';
 
-let isDebugging = false;
-
-isDebugging = true;
-
 const OPENAI_API_KEY = process.env;
 console.log('OPENAI_API_KEY', OPENAI_API_KEY);
 
@@ -152,7 +148,7 @@ const ChatInterface = () => {
 
   return (
     <Layout>
-    <Container maxWidth="md" sx={{height: '100%'}}>
+    <Container maxWidth="md" sx={{height: '100%', }}>
       <ChatContainer>
         <MessageArea>
           {messages.map((message) => (
@@ -182,7 +178,7 @@ const ChatInterface = () => {
               </MessageBubble>
             </Box>
           ))}
-          {(isLoading || isDebugging) && (
+          {(isLoading) && (
             <TypingIndicator>
               <MoreHorizIcon fontSize="large"></MoreHorizIcon>
               <Typography variant="caption">{LOADING_MSG}</Typography>
