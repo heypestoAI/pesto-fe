@@ -4,6 +4,7 @@ import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import SendIcon from '@mui/icons-material/Send';
 import AttachFileIcon from '@mui/icons-material/AttachFile';
 import Layout from "../components/layout/Layout";
+import { generateResponse } from '../utils/apiUtils';
 
 let isDebugging = false;
 
@@ -97,6 +98,7 @@ const ChatInterface = () => {
   const [isTyping, setIsTyping] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const messageEndRef = useRef(null);
+  const [customPrompt, setCustomPrompt] = useState('You are a helpful assistant.');
 
   const scrollToBottom = () => {
     messageEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -105,39 +107,6 @@ const ChatInterface = () => {
   useEffect(() => {
     scrollToBottom();
   }, [messages]);
-
-  const generateResponse = async (userMessage) => {
-    try {
-      const response = await fetch("https://api.openai.com/v1/chat/completions", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${isDebugging ? "dummy" : OPENAI_API_KEY}`
-        },
-        body: JSON.stringify({
-          model: "gpt-4-0125-preview",
-          messages: [
-            {
-              role: "system",
-              content: "You are a helpful assistant."
-            },
-            {
-              role: "user",
-              content: userMessage
-            }
-          ],
-          temperature: 0.7,
-          max_tokens: 150
-        })
-      });
-
-      const data = await response.json();
-      return data.choices[0].message.content;
-    } catch (error) {
-      console.error("Error generating response:", error);
-      return "I apologize, but I encountered an error. Please try again.";
-    }
-  };
 
   const handleSend = async () => {
     if (newMessage.trim()) {
@@ -152,7 +121,7 @@ const ChatInterface = () => {
       setNewMessage("");
       setIsLoading(true);
       
-      const response = await generateResponse(newMessage);
+      const response = await generateResponse(newMessage, customPrompt);
       
       const assistantMsg = {
         id: messages.length + 2,

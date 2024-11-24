@@ -1,39 +1,43 @@
+import { Box, Tooltip } from "@mui/material";
 import { ComposableMap, Geographies, Geography, Marker } from "react-simple-maps";
 
 const SuppliersMapChart = ({ suppliersData }) => {
-    console.log(suppliersData, "suppliersData");
     const uniqueCountries = [...new Set(suppliersData.map(item => item["Sourcing Geography"]))];
-    console.log(uniqueCountries, "uniqueCountries");
 
   return (
-    <div style={{ width: "100%", height: "400px" }}>
-        <h2>Sales Mapping by Country</h2>
-         <ComposableMap>
-      <Geographies geography="/features.json">
-        {({ geographies }) =>
-          geographies.map((geo) => {
-            const isHighlighted = uniqueCountries.includes(geo.properties.name) ||
-                                  uniqueCountries.includes(geo.properties.ADMIN);
-            
-            return (
-              <Geography
-                key={geo.rsmKey}
-                geography={geo}
-                fill={isHighlighted ? "#4338ca" : "#D6D6DA"}
-                stroke="#FFFFFF"
-                strokeWidth={0.5}
-                style={{
-                  hover: {
-                    fill: isHighlighted ? "#3730a3" : "#D6D6DA",
-                    outline: "none"
-                  }
-                }}
-              />
-            );
-          })
-        }
-      </Geographies>
-    </ComposableMap>
+    <div style={{ height: "auto" }}>
+      <h2>Sales Mapping by Country</h2>
+      <Box sx={{ width: "80%", height: "auto", mt: -6, mb: -14, ml:"auto", mr:"auto" }}>
+        <ComposableMap>
+          <Geographies geography="/features.json">
+            {({ geographies }) =>
+              geographies.map((geo) => {
+                const isHighlighted = uniqueCountries.includes(geo.properties.name) ||
+                                      uniqueCountries.includes(geo.properties.ADMIN);
+                                      const countryName = geo.properties.name;
+                
+                return (
+                  <Tooltip title={countryName} key={geo.rsmKey}>
+                  <Geography
+                    key={geo.rsmKey}
+                    geography={geo}
+                    fill={isHighlighted ? "#81C784" : "#D6D6DA"}
+                    stroke="#FFFFFF"
+                    strokeWidth={0.5}
+                    style={{
+                      hover: {
+                        fill: isHighlighted ? "#4CAF50" : "#D6D6DA",
+                        outline: "none"
+                      }
+                    }}
+                  />
+                  </Tooltip>
+                );
+              })
+            }
+          </Geographies>
+        </ComposableMap>
+      </Box>
     </div>
   );
 };

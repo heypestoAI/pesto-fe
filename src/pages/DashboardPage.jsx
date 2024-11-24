@@ -13,30 +13,18 @@ import {
   TableHead,
   TableRow,
   LinearProgress,
-  FormControl, InputLabel, Select, MenuItem
+  FormControl, InputLabel, Select, MenuItem, IconButton
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom'; // Import useNavigate
-import {
-  BarChart,
-  Bar,
-  LineChart,
-  Line,
-  PieChart,
-  Pie,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  Legend,
-  ResponsiveContainer
-} from 'recharts';
-import { TrendingUp, TrendingDown } from '@mui/icons-material';
+import { TrendingUp, TrendingDown, ChatBubbleOutline } from '@mui/icons-material';
 import Layout from '../components/layout/Layout';
 import { useExcelData } from '../contexts/ExcelDataContext';
 import CogsVsSalesChart from '../components/dashboard/CogsVsSalesChart';
 import RevenueByChannelChart from '../components/dashboard/RevenueByChannelChart';
 import DailyCogsInsightsChart from '../components/dashboard/DailyCogsInsightsChart';
 import SuppliersMapChart from '../components/dashboard/SuppliersMapChart';
+import { AccountBalance, ShoppingCart, AttachMoney } from '@mui/icons-material';
+import AIInsightsCard from '../components/dashboard/AIInsightsCard';
 
 const getSummaryData = ({cogs_sales_monthly, cogs_sales_weekly}, isMonthly=true) => {
   console.log('lelo cogs_sales_weekly', cogs_sales_weekly);
@@ -74,32 +62,57 @@ const getSummaryData = ({cogs_sales_monthly, cogs_sales_weekly}, isMonthly=true)
   }
 }
 
-const SummaryCard = ({ title, value, change, prefix = '', comparisonPeriod}) => (
-  <Card>
-    <CardContent>
-      <Typography color="textSecondary" gutterBottom>
-        {title}
-      </Typography>
-      <Typography variant="h4" component="div">
+const SummaryCard = ({ title, value, change, prefix = '', comparisonPeriod, icon: Icon, bgColor, iconColor }) => (
+  <Box sx={{ 
+    p: 2,
+    mb: -2,
+    borderRadius: 2,
+    bgcolor: bgColor,
+    height: '100%',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'space-between'
+  }}>
+    <Box>
+      <Box sx={{ 
+        width: 40, 
+        height: 40, 
+        borderRadius: '50%', 
+        display: 'flex', 
+        alignItems: 'center', 
+        justifyContent: 'center',
+        bgcolor: iconColor,
+        mb: 2
+      }}>
+        <Icon sx={{ color: 'white' }} />
+      </Box>
+      <Typography variant="h5" component="div" sx={{ mb: 1, fontWeight: 'bold' }}>
         {prefix}{value}
       </Typography>
-      <Box sx={{ display: 'flex', alignItems: 'center', mt: 1 }}>
-        {change.startsWith('+') ? (
-          <TrendingUp color="success" fontSize="small" />
-        ) : (
-          <TrendingDown color="error" fontSize="small" />
-        )}
-        <Typography 
-          variant="body2" 
-          color={change.startsWith('+') ? 'success.main' : 'error.main'}
-          sx={{ ml: 0.5 }}
-        >
-          {change} from {comparisonPeriod}
-        </Typography>
-      </Box>
-    </CardContent>
-  </Card>
+      <Typography color="text.secondary" sx={{ mb: 0.5 }}>
+        {title}
+      </Typography>
+      <Typography 
+        variant="body2" 
+        color={change.startsWith('-') ? 'error.main' : 'success.main'}
+        sx={{ display: 'flex', alignItems: 'center', gap: 0.5, fontSize: '12px' }}
+      >
+        
+      </Typography>
+    </Box>
+    <Typography 
+      color={change.startsWith('-') ? 'error.main' : 'success.main'}
+      sx={{mt: 'auto', fontSize: '12px' }}
+    >
+      {change.startsWith('-') ? <TrendingDown fontSize="12px" /> : <TrendingUp fontSize="12px" />}
+      &nbsp;
+      {change}
+      &nbsp;
+      from {comparisonPeriod}
+    </Typography>
+  </Box>
 );
+
 
 function DashboardPage() {
   const [dashboardData, setDashboardData] = useState(null);
@@ -156,34 +169,38 @@ function DashboardPage() {
   return (
     <Layout>
       <Box sx={{ p: 3 }}>
-        <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
-          <Typography variant="h4">Dashboard</Typography>
-          <FormControl variant="outlined" size="small">
-            <InputLabel id="duration-label">Duration</InputLabel>
-            <Select
-              labelId="duration-label"
-              value={duration}
-              onChange={(e) => setDuration(e.target.value)}
-              label="Duration"
-            >
-              <MenuItem value="Weekly">Weekly</MenuItem>
-              <MenuItem value="Monthly">Monthly</MenuItem>
-            </Select>
-          </FormControl>
-        </Box>
+        <Typography variant="h4" mb={2}>Dashboard</Typography>
 
-        <Grid container>
-          {/* Daily Summary */}
-          <Grid container  sx={{ mb: 3, mt: 0, pr: 3 }} md={6}>
-            <Card sx={{width: '100%'}}>
+        {/* Summary and AI Insights */}
+        <Grid container spacing={3} mb={3}>
+          <Grid item md={6}>
+            <Card sx={{ height: '100%' }}>
               <CardContent>
-                <Grid container spacing={2}>
-                  <Grid item xs={12} md={4} >
+                <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
+                  <Typography variant="h6">Summary</Typography>
+                  <FormControl variant="outlined" size="small">
+                    <InputLabel id="duration-label">Duration</InputLabel>
+                    <Select
+                      labelId="duration-label"
+                      value={duration}
+                      onChange={(e) => setDuration(e.target.value)}
+                      label="Duration"
+                    >
+                      <MenuItem value="Weekly">Weekly</MenuItem>
+                      <MenuItem value="Monthly">Monthly</MenuItem>
+                    </Select>
+                  </FormControl>
+                </Box>
+                <Grid container spacing={2} mb={4}>
+                  <Grid item xs={12} md={4}>
                     <SummaryCard
                       title="Gross Profit Margin"
                       value={`${dashboardData.dailySummary.grossProfitMargin}%`}
                       change={dashboardData.dailySummary.changes.grossProfit}
                       comparisonPeriod={duration === 'Weekly' ? 'last week' : 'last month'}
+                      icon={AccountBalance}
+                      bgColor="#f0f9ff"
+                      iconColor="#0095ff"
                     />
                   </Grid>
                   <Grid item xs={12} md={4}>
@@ -193,6 +210,9 @@ function DashboardPage() {
                       change={dashboardData.dailySummary.changes.sales}
                       prefix="£"
                       comparisonPeriod={duration === 'Weekly' ? 'last week' : 'last month'}
+                      icon={AttachMoney}
+                      bgColor="#fff4de"
+                      iconColor="#ff947a"
                     />
                   </Grid>
                   <Grid item xs={12} md={4}>
@@ -202,84 +222,89 @@ function DashboardPage() {
                       change={dashboardData.dailySummary.changes.cogs}
                       prefix="£"
                       comparisonPeriod={duration === 'Weekly' ? 'last week' : 'last month'}
+                      icon={ShoppingCart}
+                      bgColor="#dcfce7"
+                      iconColor="#3cd856"
                     />
                   </Grid>
                 </Grid>
               </CardContent>
             </Card>
           </Grid>
-          <Grid container md={6}>
+          <Grid item md={6}>
+            <AIInsightsCard />
+          </Grid>
+        </Grid>
+
+        {/* COGS Charts */}
+        <Grid container spacing={3} mb={3}>
+          <Grid item md={6}>
+            <DailyCogsInsightsChart data={excelData.cogs_sales_weekly} />
+          </Grid>
+          <Grid item md={6}>
             <CogsVsSalesChart data={excelData.cogs_sales_monthly} />
           </Grid>
         </Grid>
 
-        
-        <RevenueByChannelChart data={excelData.cogs_sales_monthly} />
-        <DailyCogsInsightsChart data={excelData.cogs_sales_weekly} />
-        <SuppliersMapChart suppliersData={excelData.suppliers} />
-
-        {/* COGS vs Sales Chart */}
+        {/* Revenue and Top Products */}
         <Grid container spacing={3}>
-          <Grid item xs={12} md={8}>
-            <Paper sx={{ p: 2 }}>
-              <Typography variant="h6" gutterBottom>
-                COGS vs Sales
-              </Typography>
-              <ResponsiveContainer width="100%" height={300}>
-                <BarChart data={dashboardData.cogsVsSales}>
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="month" />
-                  <YAxis />
-                  <Tooltip />
-                  <Legend />
-                  <Bar dataKey="cogs" fill="#82ca9d" name="COGS" />
-                  <Bar dataKey="sales" fill="#ffc658" name="Sales" />
-                </BarChart>
-              </ResponsiveContainer>
-            </Paper>
+          <Grid item xs={12} md={6}>
+
+                
+                <RevenueByChannelChart data={excelData.cogs_sales_monthly} />
           </Grid>
-          {/* Top Products Table */}
-          <Grid item xs={12}>
-            <Paper sx={{ p: 2 }}>
-              <Typography variant="h6" gutterBottom>
-                Top Products
-              </Typography>
-              <TableContainer>
-                <Table>
-                  <TableHead>
-                    <TableRow>
-                      <TableCell>#</TableCell>
-                      <TableCell>Name</TableCell>
-                      <TableCell>Popularity</TableCell>
-                      <TableCell>Sales</TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {dashboardData.topProducts.map((product) => (
-                      <TableRow key={product.id}>
-                        <TableCell>{product.id}</TableCell>
-                        <TableCell>{product.name}</TableCell>
-                        <TableCell>
-                          <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                            <LinearProgress
-                              variant="determinate"
-                              value={product.popularity}
-                              sx={{ flexGrow: 1, mr: 1 }}
-                            />
-                            <Typography variant="body2">
-                              {product.popularity}%
-                            </Typography>
-                          </Box>
-                        </TableCell>
-                        <TableCell>{product.sales}</TableCell>
+          
+          <Grid item xs={12} md={6}>
+            <Card>
+              <CardContent>
+                <Typography variant="h6" gutterBottom>
+                  Top Products
+                </Typography>
+                <TableContainer>
+                  <Table>
+                    <TableHead>
+                      <TableRow>
+                        <TableCell>#</TableCell>
+                        <TableCell>Name</TableCell>
+                        <TableCell>Popularity</TableCell>
+                        <TableCell>Sales</TableCell>
                       </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </TableContainer>
-            </Paper>
+                    </TableHead>
+                    <TableBody>
+                      {dashboardData.topProducts.map((product) => (
+                        <TableRow key={product.id}>
+                          <TableCell>{product.id}</TableCell>
+                          <TableCell>{product.name}</TableCell>
+                          <TableCell>
+                            <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                              <LinearProgress
+                                variant="determinate"
+                                value={product.popularity}
+                                sx={{ flexGrow: 1, mr: 1 }}
+                              />
+                              <Typography variant="body2">
+                                {product.popularity}%
+                              </Typography>
+                            </Box>
+                          </TableCell>
+                          <TableCell>{product.sales}</TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </TableContainer>
+              </CardContent>
+            </Card>
           </Grid>
         </Grid>
+        {/* Suppliers Map */}
+        <Grid item xs={12} md={6} mb={3}>
+          <Card>
+            <CardContent>
+              <SuppliersMapChart suppliersData={excelData.suppliers} />
+            </CardContent>
+          </Card>
+      </Grid>
       </Box>
     </Layout>
   );

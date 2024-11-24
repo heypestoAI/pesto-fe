@@ -45,9 +45,9 @@ const DailyCogsInsightsChart = ({ data }) => {
   }));
 
   return (
-    <Card>
+    <Card sx={{ height: '100%' }}>
       <CardContent>
-        <Typography variant="h6" gutterBottom>
+        <Typography variant="h6" sx={{ mb: 4 }}>
           Daily COGS Insights
         </Typography>
         <PieChart
@@ -65,15 +65,12 @@ const DailyCogsInsightsChart = ({ data }) => {
           height={200}
           slotProps={{
             legend: {
-              position: 'right',
               direction: 'column',
-              itemStyle: {
-                fontSize: '14px',
-                fontWeight: '500',
-              },
-              itemMarkWidth: 15,
-              itemMarkHeight: 15,
-              itemGap: 10,
+              position: { vertical: 'top', horizontal: 'right' },
+              padding: { left: 10, right: 20 },
+              itemMarkWidth: 10,
+              itemMarkHeight: 10,
+              itemGap: 8,
               markGap: 5,
             },
           }}

@@ -1,43 +1,49 @@
-import { Card, CardContent, Typography } from '@mui/material';
+import { Card, CardContent, Typography, Box, IconButton } from '@mui/material';
 import { BarChart } from '@mui/x-charts';
+import { ChatBubbleOutline } from '@mui/icons-material';
 
 const CogsVsSalesChart = ({ data }) => {
-    console.log(data);
-  // Filter out the YTD entry and prepare data for the chart
   const monthlyData = data.filter(item => item.Date !== 'YTD');
 
   const chartData = {
-    months: monthlyData.map(item => item.Date.substring(0, 3)), // Get first 3 letters of month
-    sales: monthlyData.map(item => Number(Math.round(item["Sales - Value"] ))), // Convert to thousands
-    cogs: monthlyData.map(item => Number(Math.round(item["Costs - Value"] )))
+    months: monthlyData.map(item => item.Date.substring(0, 3)),
+    sales: monthlyData.map(item => Number(Math.round(item["Sales - Value"]))),
+    cogs: monthlyData.map(item => Number(Math.round(item["Costs - Value"])))
   };
 
   return (
-    <Card sx={{width: "100%"}}>
+    <Card sx={{ width: "100%" }}>
       <CardContent>
-        <Typography variant="h6" gutterBottom>
-          COGS vs Sales
-        </Typography>
+        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
+          <Typography variant="h6">
+            COGS vs Sales
+          </Typography>
+        </Box>
         <BarChart
-          width={600}
-          height={300}
+          width={500}
+          height={250}
+          borderRadius={7}
           series={[
             {
               data: chartData.cogs,
               label: 'COGS',
               type: 'bar',
-              color: '#4CAF50', // Green color for COGS
+              color: '#4CAF50',
+              valueFormatter: (value) => `${value}`,
             },
             {
               data: chartData.sales,
               label: 'Sales',
               type: 'bar',
-              color: '#FFC107', // Yellow color for Sales
+              color: '#FFC107',
+              valueFormatter: (value) => `${value}`,
             },
           ]}
           xAxis={[{
             data: chartData.months,
             scaleType: 'band',
+            categoryGapRatio: 0.4 ,
+            barGapRatio: 0.2,
           }]}
           legend={{
             position: 'top',
