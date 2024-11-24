@@ -12,7 +12,8 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-  LinearProgress
+  LinearProgress,
+  FormControl, InputLabel, Select, MenuItem
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom'; // Import useNavigate
 import {
@@ -37,16 +38,53 @@ import RevenueByChannelChart from '../components/dashboard/RevenueByChannelChart
 import DailyCogsInsightsChart from '../components/dashboard/DailyCogsInsightsChart';
 import SuppliersMapChart from '../components/dashboard/SuppliersMapChart';
 
+const getSummaryData = ({cogs_sales_monthly, cogs_sales_weekly}, isMonthly=true) => {
+  console.log('lelo cogs_sales_weekly', cogs_sales_weekly);
+  if(isMonthly) {
+    // Assuming that the latest is YTD
+    const thisMonthData = cogs_sales_monthly[cogs_sales_monthly.length - 2];
+    const lastMonthData = cogs_sales_monthly[cogs_sales_monthly.length - 3];
+    return {
+      dailySummary: {
+        grossProfitMargin: (thisMonthData["Product Gross Profit Margin"]*100).toFixed(1),
+        totalSales: thisMonthData["Sales - Value"].toFixed(2),
+        totalCOGS: thisMonthData["Costs - Value"].toFixed(2),
+        changes: {
+          grossProfit: ((thisMonthData["Product Gross Profit Margin"] - lastMonthData["Product Gross Profit Margin"])* 100).toFixed(1) + "%",
+          sales: (((thisMonthData["Sales - Value"] - lastMonthData["Sales - Value"]) / lastMonthData["Sales - Value"]) * 100).toFixed(2) + "%",
+          cogs: (((thisMonthData["Costs - Value"] - lastMonthData["Costs - Value"]) / lastMonthData["Costs - Value"]) * 100).toFixed(2) + "%",
+        }
+      }
+    }
+  }
+  // weekly calculation
+  const thisWeekData = cogs_sales_weekly[cogs_sales_weekly.length - 1];
+  const lastWeekData = cogs_sales_weekly[cogs_sales_weekly.length - 2];
+  return {
+    dailySummary: {
+      grossProfitMargin: (thisWeekData["Product Gross Profit Margin"]*100).toFixed(1),
+      totalSales: thisWeekData["Sales - Value"].toFixed(2),
+      totalCOGS: thisWeekData["Costs - Value"].toFixed(2),
+      changes: {
+        grossProfit: ((thisWeekData["Product Gross Profit Margin"] - lastWeekData["Product Gross Profit Margin"])* 100).toFixed(1) + "%",
+        sales: (((thisWeekData["Sales - Value"] - lastWeekData["Sales - Value"]) / lastWeekData["Sales - Value"]) * 100).toFixed(2) + "%",
+        cogs: (((thisWeekData["Costs - Value"] - lastWeekData["Costs - Value"]) / lastWeekData["Costs - Value"]) * 100).toFixed(2) + "%",
+      }
+    }
+  }
+}
 
 function DashboardPage() {
   const [dashboardData, setDashboardData] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [duration, setDuration] = useState('Monthly');
   const { excelData } = useExcelData();
   const navigate = useNavigate(); // Initialize navigate
 
   useEffect(() => {
     if(!excelData) {
         navigate('/upload');
+        return;
     }
     processData();
     // Fetch data from localStorage or your state management solution
@@ -56,32 +94,16 @@ function DashboardPage() {
     //   processData(parsedData);
     // }
     setLoading(false);
-  }, []);
+  }, [duration]);
 
   const processData = () => {
-    console.log('excelData', excelData);
+    // console.log('excelData', excelData);
+    const summmaryData = getSummaryData(excelData, duration === 'Monthly');
+    console.log('lelo summmaryData', summmaryData);
+
     // Process your Excel data here to match the dashboard requirements
     setDashboardData({
-      dailySummary: {
-        grossProfitMargin: 48.7,
-        totalSales: 18752.41,
-        totalCOGS: 9197.52,
-        changes: {
-          grossProfit: '+8%',
-          sales: '+5%',
-          cogs: '+2.5%'
-        }
-      },
-      cogsVsSales: [
-        { month: 'Jan', cogs: 8000, sales: 12000 },
-        { month: 'Feb', cogs: 9000, sales: 14000 },
-        // ... more data
-      ],
-      revenueByChannel: [
-        { month: 'Jan', online: 12000, offline: 10000 },
-        { month: 'Feb', online: 15000, offline: 11000 },
-        // ... more data
-      ],
+      dailySummary: summmaryData.dailySummary,
       topProducts: [
         { id: '01', name: 'Home Decor Range', popularity: 45, sales: '45%' },
         { id: '02', name: 'Disney Princess Pink Bag 18"', popularity: 35, sales: '29%' },
@@ -90,7 +112,7 @@ function DashboardPage() {
     });
   };
 
-  const SummaryCard = ({ title, value, change, prefix = '' }) => (
+  const SummaryCard = ({ title, value, change, prefix = '', comparisonPeriod}) => (
     <Card>
       <CardContent>
         <Typography color="textSecondary" gutterBottom>
@@ -110,7 +132,7 @@ function DashboardPage() {
             color={change.startsWith('+') ? 'success.main' : 'error.main'}
             sx={{ ml: 0.5 }}
           >
-            {change} from yesterday
+            {change} from {comparisonPeriod}
           </Typography>
         </Box>
       </CardContent>
@@ -132,8 +154,23 @@ function DashboardPage() {
   return (
     <Layout>
       <Box sx={{ p: 3 }}>
-        <Typography variant="h4" sx={{ mb: 3 }}>Dashboard</Typography>
-
+        {/* <Typography variant="h4" sx={{ mb: 3 }}>Dashboard</Typography> */}
+        <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
+        <Typography variant="h4">Dashboard</Typography>
+        <FormControl variant="outlined" size="small">
+          <InputLabel id="duration-label">Duration</InputLabel>
+          <Select
+            labelId="duration-label"
+            value={duration}
+            onChange={(e) => setDuration(e.target.value)}
+            label="Duration"
+          >
+            <MenuItem value="Weekly">Weekly</MenuItem>
+            <MenuItem value="Monthly">Monthly</MenuItem>
+          </Select>
+        </FormControl>
+      </Box>
+        
         {/* Daily Summary */}
         <Grid container spacing={3} sx={{ mb: 3 }}>
           <Grid item xs={12} md={4}>
@@ -141,6 +178,7 @@ function DashboardPage() {
               title="Gross Profit Margin"
               value={`${dashboardData.dailySummary.grossProfitMargin}%`}
               change={dashboardData.dailySummary.changes.grossProfit}
+              comparisonPeriod={duration === 'Weekly' ? 'last week' : 'last month'}
             />
           </Grid>
           <Grid item xs={12} md={4}>
@@ -149,6 +187,7 @@ function DashboardPage() {
               value={dashboardData.dailySummary.totalSales}
               change={dashboardData.dailySummary.changes.sales}
               prefix="£"
+              comparisonPeriod={duration === 'Weekly' ? 'last week' : 'last month'}
             />
           </Grid>
           <Grid item xs={12} md={4}>
@@ -157,6 +196,7 @@ function DashboardPage() {
               value={dashboardData.dailySummary.totalCOGS}
               change={dashboardData.dailySummary.changes.cogs}
               prefix="£"
+              comparisonPeriod={duration === 'Weekly' ? 'last week' : 'last month'}
             />
           </Grid>
         </Grid>
