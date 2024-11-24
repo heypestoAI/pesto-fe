@@ -74,6 +74,33 @@ const getSummaryData = ({cogs_sales_monthly, cogs_sales_weekly}, isMonthly=true)
   }
 }
 
+const SummaryCard = ({ title, value, change, prefix = '', comparisonPeriod}) => (
+  <Card>
+    <CardContent>
+      <Typography color="textSecondary" gutterBottom>
+        {title}
+      </Typography>
+      <Typography variant="h4" component="div">
+        {prefix}{value}
+      </Typography>
+      <Box sx={{ display: 'flex', alignItems: 'center', mt: 1 }}>
+        {change.startsWith('+') ? (
+          <TrendingUp color="success" fontSize="small" />
+        ) : (
+          <TrendingDown color="error" fontSize="small" />
+        )}
+        <Typography 
+          variant="body2" 
+          color={change.startsWith('+') ? 'success.main' : 'error.main'}
+          sx={{ ml: 0.5 }}
+        >
+          {change} from {comparisonPeriod}
+        </Typography>
+      </Box>
+    </CardContent>
+  </Card>
+);
+
 function DashboardPage() {
   const [dashboardData, setDashboardData] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -112,32 +139,7 @@ function DashboardPage() {
     });
   };
 
-  const SummaryCard = ({ title, value, change, prefix = '', comparisonPeriod}) => (
-    <Card>
-      <CardContent>
-        <Typography color="textSecondary" gutterBottom>
-          {title}
-        </Typography>
-        <Typography variant="h4" component="div">
-          {prefix}{value}
-        </Typography>
-        <Box sx={{ display: 'flex', alignItems: 'center', mt: 1 }}>
-          {change.startsWith('+') ? (
-            <TrendingUp color="success" fontSize="small" />
-          ) : (
-            <TrendingDown color="error" fontSize="small" />
-          )}
-          <Typography 
-            variant="body2" 
-            color={change.startsWith('+') ? 'success.main' : 'error.main'}
-            sx={{ ml: 0.5 }}
-          >
-            {change} from {comparisonPeriod}
-          </Typography>
-        </Box>
-      </CardContent>
-    </Card>
-  );
+
 
   if (loading) {
     return <Box sx={{ p: 3 }}><LinearProgress /></Box>;
@@ -154,54 +156,64 @@ function DashboardPage() {
   return (
     <Layout>
       <Box sx={{ p: 3 }}>
-        {/* <Typography variant="h4" sx={{ mb: 3 }}>Dashboard</Typography> */}
         <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
-        <Typography variant="h4">Dashboard</Typography>
-        <FormControl variant="outlined" size="small">
-          <InputLabel id="duration-label">Duration</InputLabel>
-          <Select
-            labelId="duration-label"
-            value={duration}
-            onChange={(e) => setDuration(e.target.value)}
-            label="Duration"
-          >
-            <MenuItem value="Weekly">Weekly</MenuItem>
-            <MenuItem value="Monthly">Monthly</MenuItem>
-          </Select>
-        </FormControl>
-      </Box>
-        
-        {/* Daily Summary */}
-        <Grid container spacing={3} sx={{ mb: 3 }}>
-          <Grid item xs={12} md={4}>
-            <SummaryCard
-              title="Gross Profit Margin"
-              value={`${dashboardData.dailySummary.grossProfitMargin}%`}
-              change={dashboardData.dailySummary.changes.grossProfit}
-              comparisonPeriod={duration === 'Weekly' ? 'last week' : 'last month'}
-            />
+          <Typography variant="h4">Dashboard</Typography>
+          <FormControl variant="outlined" size="small">
+            <InputLabel id="duration-label">Duration</InputLabel>
+            <Select
+              labelId="duration-label"
+              value={duration}
+              onChange={(e) => setDuration(e.target.value)}
+              label="Duration"
+            >
+              <MenuItem value="Weekly">Weekly</MenuItem>
+              <MenuItem value="Monthly">Monthly</MenuItem>
+            </Select>
+          </FormControl>
+        </Box>
+
+        <Grid container>
+          {/* Daily Summary */}
+          <Grid container  sx={{ mb: 3, mt: 0, pr: 3 }} md={6}>
+            <Card sx={{width: '100%'}}>
+              <CardContent>
+                <Grid container spacing={2}>
+                  <Grid item xs={12} md={4} >
+                    <SummaryCard
+                      title="Gross Profit Margin"
+                      value={`${dashboardData.dailySummary.grossProfitMargin}%`}
+                      change={dashboardData.dailySummary.changes.grossProfit}
+                      comparisonPeriod={duration === 'Weekly' ? 'last week' : 'last month'}
+                    />
+                  </Grid>
+                  <Grid item xs={12} md={4}>
+                    <SummaryCard
+                      title="Total Sales"
+                      value={dashboardData.dailySummary.totalSales}
+                      change={dashboardData.dailySummary.changes.sales}
+                      prefix="£"
+                      comparisonPeriod={duration === 'Weekly' ? 'last week' : 'last month'}
+                    />
+                  </Grid>
+                  <Grid item xs={12} md={4}>
+                    <SummaryCard
+                      title="Total COGS"
+                      value={dashboardData.dailySummary.totalCOGS}
+                      change={dashboardData.dailySummary.changes.cogs}
+                      prefix="£"
+                      comparisonPeriod={duration === 'Weekly' ? 'last week' : 'last month'}
+                    />
+                  </Grid>
+                </Grid>
+              </CardContent>
+            </Card>
           </Grid>
-          <Grid item xs={12} md={4}>
-            <SummaryCard
-              title="Total Sales"
-              value={dashboardData.dailySummary.totalSales}
-              change={dashboardData.dailySummary.changes.sales}
-              prefix="£"
-              comparisonPeriod={duration === 'Weekly' ? 'last week' : 'last month'}
-            />
-          </Grid>
-          <Grid item xs={12} md={4}>
-            <SummaryCard
-              title="Total COGS"
-              value={dashboardData.dailySummary.totalCOGS}
-              change={dashboardData.dailySummary.changes.cogs}
-              prefix="£"
-              comparisonPeriod={duration === 'Weekly' ? 'last week' : 'last month'}
-            />
+          <Grid container md={6}>
+            <CogsVsSalesChart data={excelData.cogs_sales_monthly} />
           </Grid>
         </Grid>
 
-        <CogsVsSalesChart data={excelData.cogs_sales_monthly} />
+        
         <RevenueByChannelChart data={excelData.cogs_sales_monthly} />
         <DailyCogsInsightsChart data={excelData.cogs_sales_weekly} />
         <SuppliersMapChart suppliersData={excelData.suppliers} />

@@ -13,7 +13,7 @@ const CogsVsSalesChart = ({ data }) => {
   };
 
   return (
-    <Card>
+    <Card sx={{width: "100%"}}>
       <CardContent>
         <Typography variant="h6" gutterBottom>
           COGS vs Sales
