@@ -23,11 +23,10 @@ import CogsVsSalesChart from '../components/dashboard/CogsVsSalesChart';
 import RevenueByChannelChart from '../components/dashboard/RevenueByChannelChart';
 import DailyCogsInsightsChart from '../components/dashboard/DailyCogsInsightsChart';
 import SuppliersMapChart from '../components/dashboard/SuppliersMapChart';
-import { AccountBalance, ShoppingCart, AttachMoney } from '@mui/icons-material';
+import { AccountBalance, ShoppingCart, CurrencyPound } from '@mui/icons-material';
 import AIInsightsCard from '../components/dashboard/AIInsightsCard';
 
 const getSummaryData = ({cogs_sales_monthly, cogs_sales_weekly}, isMonthly=true) => {
-  console.log('lelo cogs_sales_weekly', cogs_sales_weekly);
   if(isMonthly) {
     // Assuming that the latest is YTD
     const thisMonthData = cogs_sales_monthly[cogs_sales_monthly.length - 2];
@@ -210,7 +209,7 @@ function DashboardPage() {
                       change={dashboardData.dailySummary.changes.sales}
                       prefix="£"
                       comparisonPeriod={duration === 'Weekly' ? 'last week' : 'last month'}
-                      icon={AttachMoney}
+                      icon={CurrencyPound}
                       bgColor="#fff4de"
                       iconColor="#ff947a"
                     />
@@ -247,7 +246,7 @@ function DashboardPage() {
         </Grid>
 
         {/* Revenue and Top Products */}
-        <Grid container spacing={3}>
+        <Grid container spacing={3} mb={3}>
           <Grid item xs={12} md={6}>
 
                 

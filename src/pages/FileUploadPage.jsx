@@ -24,7 +24,7 @@ import {
 } from '@mui/icons-material';
 import * as XLSX from 'xlsx';
 import Layout from '../components/layout/Layout';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useExcelData } from '../contexts/ExcelDataContext';
 import { saveAs } from 'file-saver';
 import { processRecipeData, processIngredientData } from '../utils/dataProcessing';
@@ -93,8 +93,10 @@ const validateExcelFile = async (file) => {
     });
   };
 
-function FileUploadPage() {
+const FileUploadPage = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const wasRedirected = location.state?.fromProtectedRoute;
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
@@ -195,7 +197,7 @@ function FileUploadPage() {
   };
 
   return (
-    <Layout>
+    <Layout showSidebar={false}>
       <Box sx={{ maxWidth: 800, mx: 'auto', p: 3 }}>
         <Typography variant="h5" align="center" gutterBottom>
           Welcome to Pesto!
@@ -203,6 +205,12 @@ function FileUploadPage() {
         <Typography variant="subtitle1" align="center" gutterBottom>
           Get started by uploading your data.
         </Typography>
+
+        {wasRedirected && (
+          <Alert severity="info" sx={{ mb: 2 }}>
+            Please upload your Excel data first to access other features.
+          </Alert>
+        )}
 
         <Paper
           sx={{

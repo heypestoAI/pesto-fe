@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Box, Card, Typography, Select, MenuItem } from '@mui/material';
+import { useNavigate } from 'react-router-dom'; // Import useNavigate
 //import { DailyCogsInsightsChart } from '../components/Dashboard/DailyCogsInsightsChart';
 import { IngredientsChart } from '../components/Products/IngredientsChart';
 import { GrossProfitChart } from '../components/Products/GrossProfitChart';
@@ -11,6 +12,7 @@ import { CogsInsightsChart } from '../components/Products/CogsInsightsChart';
 
 
 const Products = () => {
+  const navigate = useNavigate();
   const [selectedProduct, setSelectedProduct] = useState('');
   const {excelData} = useExcelData();
   const latestProducts = getLatestProductData(excelData.cogs_sales);
@@ -30,9 +32,15 @@ const Products = () => {
     // Update product data state with the found data
     setProductData(selectedProductData);
   };
+  
 
   // Optional: Set initial product and data when component mounts
   useEffect(() => {
+    console.log('excelData', excelData);
+    if(!excelData) {
+      navigate('/upload');
+      return;
+    }
     if (products.length > 0 && !selectedProduct) {
       const initialProduct = products[0];
       setSelectedProduct(initialProduct);

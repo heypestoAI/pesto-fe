@@ -2,11 +2,11 @@ import { Box } from '@mui/material';
 import Header from './Header';
 import Sidebar from './Sidebar';
 
-function Layout({ children }) {
+function Layout({ children, showSidebar = true }) {
   return (
     <Box sx={{ display: 'flex' }}>
       <Header />
-      <Sidebar />
+      {showSidebar && <Sidebar />}
       <Box
         component="main"
         sx={{

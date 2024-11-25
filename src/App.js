@@ -1,14 +1,12 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { ThemeProvider, createTheme } from '@mui/material';
 import { AuthProvider } from './contexts/AuthContext';
-import Layout from './components/layout/Layout';
 import Login from './components/auth/Login';
 import Dashboard from './pages/DashboardPage';
 import Products from './pages/Products';
 import ChatPage from './pages/ChatPage';
-import Chat from './components/chat/Chat';
 import FileUploadPage from './pages/FileUploadPage';
-import { ExcelDataProvider } from './contexts/ExcelDataContext';
+import { ExcelDataProvider, useExcelData } from './contexts/ExcelDataContext';
 
 const theme = createTheme({
   typography: {
@@ -27,32 +25,65 @@ function App() {
       <ExcelDataProvider>
         <AuthProvider>
           <Router>
-            <Routes>
-              <Route path="/login" element={<Login />} />
-              <Route
-                path="/dashboard"
-                element={
-                
-                    <Dashboard />
-                 
-                }
-              />
-              <Route
-                path="/upload"
-                element={
-                
-                    <FileUploadPage />
-                 
-                }
-              />
-              <Route path="/products" element={<Products />} />
-              <Route path="/chat" element={<ChatPage />} />
-              <Route path="/" element={<Navigate to="/dashboard" replace />} />
-            </Routes>
+            <AppRoutes />
           </Router>
         </AuthProvider>
       </ExcelDataProvider>
     </ThemeProvider>
+  );
+}
+
+// Separate component for routes where context is available
+function AppRoutes() {
+  const { excelData } = useExcelData();
+
+  // Protected Route component
+  const ProtectedRoute = ({ children }) => {
+    const currentPath = window.location.pathname;
+    
+    // Allow access to upload page even without data
+    if (currentPath === '/upload') {
+      return children;
+    }
+
+    // Redirect to upload if no excel data
+    if (!excelData || Object.keys(excelData).length === 0) {
+      return <Navigate to="/upload" replace />;
+    }
+
+    return children;
+  };
+
+  return (
+    <Routes>
+      <Route path="/login" element={<Login />} />
+      <Route
+        path="/dashboard"
+        element={
+          <ProtectedRoute>
+            <Dashboard />
+          </ProtectedRoute>
+        }
+      />
+      <Route path="/upload" element={<FileUploadPage />} />
+      <Route
+        path="/products"
+        element={
+          <ProtectedRoute>
+            <Products />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/chat"
+        element={
+          <ProtectedRoute>
+            <ChatPage />
+          </ProtectedRoute>
+        }
+      />
+      <Route path="/" element={<Navigate to="/dashboard" replace />} />
+    </Routes>
   );
 }
 

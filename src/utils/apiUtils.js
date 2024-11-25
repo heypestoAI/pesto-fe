@@ -1,8 +1,7 @@
-const OPENAI_API_KEY = "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";
+const OPENAI_API_KEY = process.env.REACT_APP_OPENAI_API_KEY;
 let isDebugging = false;
 
-isDebugging = true;
-//  process.env.OPENAI_API_KEY; // Ensure this is set in your environment
+// isDebugging = true;
 
 export const generateResponse = async (userMessage, prompt) => {
   try {
@@ -25,15 +24,59 @@ export const generateResponse = async (userMessage, prompt) => {
           }
         ],
         temperature: 0.7,
-        max_tokens: 150
+        max_tokens: 1000,
+        stream: true  // Enable streaming
       })
     });
 
-    const data = await response.json();
-    return data.choices[0].message.content;
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    // Create a decoder for parsing the stream
+    const decoder = new TextDecoder();
+    const reader = response.body.getReader();
+    
+    // Return an async generator that yields chunks of text
+    return {
+      async* [Symbol.asyncIterator]() {
+        try {
+          while (true) {
+            const { done, value } = await reader.read();
+            if (done) break;
+            
+            // Decode the chunk and split into lines
+            const chunk = decoder.decode(value);
+            const lines = chunk
+              .split('\n')
+              .filter(line => line.trim() !== '');
+
+            // Process each line
+            for (const line of lines) {
+              if (line.startsWith('data: ')) {
+                const data = line.slice(6);
+                if (data === '[DONE]') return;
+                
+                try {
+                  const parsed = JSON.parse(data);
+                  const content = parsed.choices[0]?.delta?.content;
+                  if (content) {
+                    yield content;
+                  }
+                } catch (e) {
+                  console.error('Error parsing JSON:', e);
+                }
+              }
+            }
+          }
+        } finally {
+          reader.releaseLock();
+        }
+      }
+    };
   } catch (error) {
     console.error("Error generating response:", error);
-    return "I apologize, but I encountered an error. Please try again.";
+    throw error;
   }
 };
 

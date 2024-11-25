@@ -10,7 +10,7 @@ import {
 import {
   Dashboard as DashboardIcon,
   Inventory as ProductsIcon,
-  People as CustomersIcon,
+  Chat as ChatIcon,
   ShoppingCart as OrdersIcon,
   LocalShipping as ShipmentsIcon,
   Receipt as TransactionsIcon,
@@ -22,16 +22,17 @@ import { useAuth } from '../../contexts/AuthContext';
 
 const DRAWER_WIDTH = 240;
 
-const StyledListItem = styled(ListItem)(({ theme, active }) => ({
+const StyledListItem = styled(ListItem)(({ theme, active, disabled }) => ({
   margin: '8px 16px',
   borderRadius: '8px',
   backgroundColor: active ? '#e8f5e9' : 'transparent',
-  color: active ? '#00B517' : '#666',
+  color: active ? '#00B517' : disabled ? '#ccc' : '#666',
+  cursor: disabled ? 'not-allowed' : 'pointer',
   '&:hover': {
-    backgroundColor: active ? '#e8f5e9' : '#f5f5f5',
+    backgroundColor: active ? '#e8f5e9' : disabled ? 'transparent' : '#f5f5f5',
   },
   '& .MuiListItemIcon-root': {
-    color: active ? '#00B517' : '#666',
+    color: active ? '#00B517' : disabled ? '#ccc' : '#666',
   },
 }));
 
@@ -43,11 +44,11 @@ function Sidebar() {
   const menuItems = [
     { text: 'Dashboard', icon: <DashboardIcon />, path: '/dashboard' },
     { text: 'Products', icon: <ProductsIcon />, path: '/products' },
-    { text: 'Customers', icon: <CustomersIcon />, path: '/customers' },
-    { text: 'Orders', icon: <OrdersIcon />, path: '/orders' },
-    { text: 'Shipments', icon: <ShipmentsIcon />, path: '/shipments' },
-    { text: 'Transactions', icon: <TransactionsIcon />, path: '/transactions' },
-    { text: 'Settings', icon: <SettingsIcon />, path: '/settings' },
+    { text: 'Chat', icon: <ChatIcon />, path: '/chat' },
+    { text: 'Orders', icon: <OrdersIcon />, path: '/orders', disabled: true },
+    { text: 'Shipments', icon: <ShipmentsIcon />, path: '/shipments', disabled: true },
+    { text: 'Transactions', icon: <TransactionsIcon />, path: '/transactions', disabled: true },
+    { text: 'Settings', icon: <SettingsIcon />, path: '/settings', disabled: true },
   ];
 
   const handleLogout = () => {
@@ -76,7 +77,8 @@ function Sidebar() {
             <StyledListItem
               button
               key={item.text}
-              onClick={() => navigate(item.path)}
+              onClick={!item.disabled ? () => navigate(item.path) : undefined}
+              disabled={item.disabled}
               active={location.pathname === item.path ? 1 : 0}
             >
               <ListItemIcon>{item.icon}</ListItemIcon>
