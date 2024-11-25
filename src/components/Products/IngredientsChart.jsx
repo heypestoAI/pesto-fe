@@ -46,11 +46,11 @@ export const IngredientsChart = ({ recipesData, selectedProduct }) => {
 
   return (
     <BarChart
-      width={500}
+      width={600}
       height={300}
       data={data}
       layout="vertical"
-      margin={{ top: 5, right: 30, left: 100, bottom: 5 }}
+      margin={{ top: 5, right: 30, bottom: 5 }}
     >
       <CartesianGrid strokeDasharray="3 3" />
       <XAxis type="number" unit="%" domain={[0, 50]}/>

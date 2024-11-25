@@ -71,7 +71,7 @@ function Sidebar() {
         },
       }}
     >
-      <Box sx={{ mt: 8 }}>
+      <Box>
         <List>
           {menuItems.map((item) => (
             <StyledListItem

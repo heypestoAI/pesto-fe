@@ -39,7 +39,7 @@ export const CogsInsightsChart = ({ productData }) => {
 
   return (
     <div style={{ width: '100%', height: 300 }}>
-      <PieChart width={400} height={300}>
+      <PieChart width={600} height={300}>
         <Pie
           data={data}
           cx="50%"
