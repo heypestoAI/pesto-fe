@@ -8,6 +8,7 @@ import Layout from '../components/layout/Layout';
 import { getLatestProductData } from '../utils/getLatestProductData';
 import { useExcelData } from '../contexts/ExcelDataContext';
 import { CogsInsightsChart } from '../components/Products/CogsInsightsChart';
+import AIInsightsCard from '../components/dashboard/AIInsightsCard';
 
 
 
@@ -19,6 +20,8 @@ const Products = () => {
 
   const products = [...new Set(latestProducts.map(item => item.Product))];
   const [productData, setProductData] = useState(null);
+  // const insight = generateProductInsights(excelData);
+  // console.log('insight', insight);
 
   const handleProductChange = (event) => {
     const selectedValue = event.target.value;
@@ -75,7 +78,7 @@ const Products = () => {
       {/* Metrics Cards */}
       <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 3, mb: 3 }}>
         <Card sx={{ p: 2 }}>
-          <Typography variant="subtitle1" color="textSecondary">Revenue</Typography>
+          <Typography variant="subtitle1" color="textSecondary" mb={3}>Revenue</Typography>
           <Typography variant="h4">
             £{productData ? productData["Sales - Value"].toLocaleString(undefined, {
               minimumFractionDigits: 2,
@@ -84,7 +87,7 @@ const Products = () => {
           </Typography>
         </Card>
         <Card sx={{ p: 2 }}>
-          <Typography variant="subtitle1" color="textSecondary">Overall COGS</Typography>
+          <Typography variant="subtitle1" color="textSecondary" mb={3}>Overall COGS</Typography>
           <Typography variant="h4">
             £{productData ? productData["Costs - Value"].toLocaleString(undefined, {
               minimumFractionDigits: 2,
@@ -92,10 +95,7 @@ const Products = () => {
             }) : '0.00'}
           </Typography>
         </Card>
-        <Card sx={{ p: 2 }}>
-          <Typography variant="subtitle1" color="textSecondary">AI Recommendation</Typography>
-          <Typography variant="body1">Decrease Spinach by 2% to have 10% increase in GPM</Typography>
-        </Card>
+        <AIInsightsCard isProduct={true}/>
       </Box>
 
       {/* Charts Grid */}

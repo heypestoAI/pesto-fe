@@ -18,7 +18,7 @@ const RevenueByChannelChart = ({ data }) => {
           Revenue by channel
         </Typography>
         <BarChart
-          width={600}
+          width={550}
           height={300}
           series={[
             {

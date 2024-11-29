@@ -121,6 +121,7 @@ function DashboardPage() {
   const navigate = useNavigate(); // Initialize navigate
 
   useEffect(() => {
+    console.log("dashboard page mounted", duration);
     if(!excelData) {
         navigate('/upload');
         return;
@@ -253,7 +254,7 @@ function DashboardPage() {
             </Card>
           </Grid>
           <Grid item md={6}>
-            <AIInsightsCard />
+            <AIInsightsCard isProduct={false}/>
           </Grid>
         </Grid>
 

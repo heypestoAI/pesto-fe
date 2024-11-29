@@ -199,7 +199,7 @@ const FileUploadPage = () => {
   return (
     <Layout showSidebar={false}>
       <Box sx={{ maxWidth: 800, mx: 'auto', p: 3 }}>
-        <Typography variant="h5" align="center" gutterBottom>
+        <Typography variant="h5" align="center" gutterBottom sx={{ color: 'green' }}>
           Welcome to Pesto!
         </Typography>
         <Typography variant="subtitle1" align="center" gutterBottom>
@@ -324,17 +324,6 @@ const FileUploadPage = () => {
             GO TO DASHBOARD
           </Button>
 
-          <Typography 
-            variant="body2" 
-            color="primary" 
-            sx={{ 
-              mt: 2, 
-              cursor: 'pointer',
-              textDecoration: 'underline'
-            }}
-          >
-            Download Sample Template for the data here
-          </Typography>
         </Paper>
 
         <Snackbar 

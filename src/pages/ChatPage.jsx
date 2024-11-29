@@ -148,7 +148,7 @@ const ChatInterface = () => {
       setMessages(prev => [...prev, assistantMsg]);
 
       try {
-        const stream = await generateResponse(newMessage || messageFromChip, customPrompt, excelData);
+        const stream = await generateResponse(newMessage || messageFromChip, excelData);
         let accumulatedText = "";
         
         for await (const chunk of stream) {

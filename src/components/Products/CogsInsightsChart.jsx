@@ -38,15 +38,15 @@ export const CogsInsightsChart = ({ productData }) => {
   };
 
   return (
-    <div style={{ width: '100%', height: 300 }}>
-      <PieChart width={600} height={300}>
+    <div style={{ width: '110%', height: 300 }}>
+      <PieChart width={550} height={300}>
         <Pie
           data={data}
           cx="50%"
           cy="50%"
           labelLine={false}
           label={({ name, percentage }) => `${name} (${percentage}%)`}
-          outerRadius={100}
+          outerRadius={88}
           fill="#8884d8"
           dataKey="value"
         >
