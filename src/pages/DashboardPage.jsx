@@ -136,20 +136,42 @@ function DashboardPage() {
   }, [duration]);
 
   const processData = () => {
-    // console.log('excelData', excelData);
     const summmaryData = getSummaryData(excelData, duration === 'Monthly');
-    console.log('lelo summmaryData', summmaryData);
+    
+    // Process top products from monthly data
+    const monthlyData = excelData.cogs_sales_monthly;
+    const currentMonth = monthlyData[monthlyData.length - 2]; // Get latest non-YTD month
+    
+    // Sort products by sales volume and take top 5
 
-    // Process your Excel data here to match the dashboard requirements
     setDashboardData({
       dailySummary: summmaryData.dailySummary,
-      topProducts: [
-        { id: '01', name: 'Home Decor Range', popularity: 45, sales: '45%' },
-        { id: '02', name: 'Disney Princess Pink Bag 18"', popularity: 35, sales: '29%' },
-        // ... more data
-      ]
     });
   };
+
+  const topProducts = (() => {
+    // Filter out summary rows (ones with text dates like "January", "YTD")
+    const numericData = excelData.cogs_sales.filter(item => !isNaN(item.Date));
+    
+    // Get the latest Excel date
+    const latestDate = Math.max(...numericData.map(item => item.Date));
+    
+    // Get top 3 products from the latest date
+    return numericData
+      .filter(item => 
+        item.Date === latestDate && 
+        item.Product !== 'Total'
+      )
+      .map(item => ({
+        id: item.Product,
+        name: item.Product,
+        salesVolume: item['Sales - Volume'],
+        salesValue: item['Sales - Value'],
+        grossProfitMargin: item['Product Gross Profit Margin']
+      }))
+      .sort((a, b) => b.grossProfitMargin - a.grossProfitMargin)
+      .slice(0, 4);  // Take only top 3 products
+  })();
 
 
 
@@ -264,29 +286,31 @@ function DashboardPage() {
                     <TableHead>
                       <TableRow>
                         <TableCell>#</TableCell>
-                        <TableCell>Name</TableCell>
-                        <TableCell>Popularity</TableCell>
-                        <TableCell>Sales</TableCell>
+                        <TableCell>Product Name</TableCell>
+                        <TableCell>Gross Profit Margin</TableCell>
+                        <TableCell>Units Sold</TableCell>
+                        <TableCell>Total Sales</TableCell>
                       </TableRow>
                     </TableHead>
                     <TableBody>
-                      {dashboardData.topProducts.map((product) => (
+                      {topProducts.map((product, index) => (
                         <TableRow key={product.id}>
-                          <TableCell>{product.id}</TableCell>
+                          <TableCell>{index + 1}</TableCell>
                           <TableCell>{product.name}</TableCell>
                           <TableCell>
                             <Box sx={{ display: 'flex', alignItems: 'center' }}>
                               <LinearProgress
                                 variant="determinate"
-                                value={product.popularity}
+                                value={product.grossProfitMargin * 100}
                                 sx={{ flexGrow: 1, mr: 1 }}
                               />
                               <Typography variant="body2">
-                                {product.popularity}%
+                                {(product.grossProfitMargin * 100).toFixed(1)}%
                               </Typography>
                             </Box>
                           </TableCell>
-                          <TableCell>{product.sales}</TableCell>
+                          <TableCell>{product.salesVolume}</TableCell>
+                          <TableCell>£{product.salesValue.toFixed(2)}</TableCell>
                         </TableRow>
                       ))}
                     </TableBody>
