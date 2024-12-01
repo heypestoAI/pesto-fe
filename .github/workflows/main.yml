@@ -17,7 +17,7 @@ jobs:
     - name: Install dependencies
       run: npm install
     - name: Build
-      run: CI=false npm run build
+      run: CI=false REACT_APP_API_KI=${{secrets.ACTIONS_DEPLOY_ACCESS_TOKEN}} npm run build
     - name: Deploy
       run: |
         git config --global user.name $user_name
@@ -27,5 +27,5 @@ jobs:
       env:
         user_name: 'github-actions[bot]'
         user_email: 'github-actions[bot]@users.noreply.github.com'
-        github_token: ${{ secrets.deploy-access }}
+        github_token: ${{ secrets.ACTIONS_DEPLOY_ACCESS_TOKEN }}
         repository: ${{ github.repository }}
