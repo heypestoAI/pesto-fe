@@ -1,5 +1,5 @@
 import callOnceInInterval from 'call-once-in-interval';
-const OPENAI_API_KEY = process.env.REACT_APP_OPENAI_API_KEY;
+const API_KI = process.env.REACT_APP_API_KI;
 let isDebugging = false;
 
 // isDebugging = true;
@@ -42,7 +42,7 @@ const generateResponseLocal = async (userMessage, excelData) => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": `Bearer ${isDebugging ? "dummy" : OPENAI_API_KEY}`
+        "Authorization": `Bearer ${isDebugging ? "dummy" : API_KI}`
       },
       body: JSON.stringify({
         model: "gpt-4o",
@@ -141,7 +141,7 @@ export const generateInsights = async (excelData) => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": `Bearer ${isDebugging ? "dummy" : OPENAI_API_KEY}`
+        "Authorization": `Bearer ${isDebugging ? "dummy" : API_KI}`
       },
       body: JSON.stringify({
         model: "gpt-4o",
@@ -184,7 +184,7 @@ const generateProductInsightsLocal = async (excelData) => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": `Bearer ${isDebugging ? "dummy" : OPENAI_API_KEY}`
+        "Authorization": `Bearer ${isDebugging ? "dummy" : API_KI}`
       },
       body: JSON.stringify({
         model: "gpt-4o",

@@ -1,7 +1,7 @@
 {
   "name": "pesto-react-fe",
   "version": "0.1.0",
-  "homepage": "https://chewchoo.github.io/pesto-fe-build/",
+  "homepage": "https://heypestoai.github.io/pesto-fe/",
   "private": true,
   "dependencies": {
     "@emotion/react": "^11.13.5",
@@ -36,7 +36,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "deploy": "node deploy.js"
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
   "eslintConfig": {
     "extends": [
@@ -55,5 +56,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "gh-pages": "^6.2.0"
   }
 }
