@@ -8,8 +8,6 @@ import Layout from "../components/layout/Layout";
 import { generateResponse } from '../utils/apiUtils';
 import { useExcelData } from '../contexts/ExcelDataContext';
 
-const OPENAI_API_KEY = process.env;
-
 const GREETING = "Hello! I'm your Pesto AI. I can help you analyze your performance data and answer any questions about your metrics. What would you like to know?"
 const LOADING_MSG = "Pesto AI is thinking...";
 
