@@ -47,6 +47,7 @@ const generateResponseLocal = async (userMessage, excelData) => {
         - Ensure recommendations are precise and achievable within the given context and current data constraints.
         - Avoid giving away generic advice.
         - The date field contains the numerical representation of a date in Excel's internal system. Convert them to human readable dates for better understanding.
+        - The currency in the provided data is £.
         `;
 
     const response = await throttledFetch("https://api.openai.com/v1/chat/completions", {
@@ -143,7 +144,8 @@ export const generateInsights = async (excelData) => {
       - Each insight should be a simple single sentence, between 10 and 15 words. Keep the sentence concise and to the point. Don't have a heading or summary for bullet points.
     
     Notes: 
-    - The date field contains the numerical representation of a date in Excel's internal system. Convert them to human readable dates for better understanding.
+    - The date field contains the numerical representation of a date in Excel's internal system. Convert them to human readable dates for better understanding
+    - The currency in the provided data is £.
       `;
 
     const userPrompt = `Based on the COGS vs Sales data - generate insights for:
@@ -194,7 +196,8 @@ const generateProductInsightsLocal = async (excelData, selectedProduct) => {
     Generate one insight in one simple sentence less than 10 words in markdown. The insight should be based on the data and the business.
     
     Notes:
-    - The date field contains the numerical representation of a date in Excel's internal system. Convert them to human readable dates for better understanding.`;
+    - The date field contains the numerical representation of a date in Excel's internal system. Convert them to human readable dates for better understanding.
+    - The currency in the provided data is £.`;
 
     const userPrompt = `Generate one insight on the product - ${selectedProduct}.`;
 
@@ -230,7 +233,7 @@ const generateProductInsightsLocal = async (excelData, selectedProduct) => {
 }; 
 
 export const generateResponse = generateResponseLocal;
-export const generateProductInsights = callOnceInInterval(generateProductInsightsLocal, 2000);
+export const generateProductInsights = generateProductInsightsLocal;
 
 
 
