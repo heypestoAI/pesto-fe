@@ -1,6 +1,7 @@
 {
   "name": "pesto-react-fe",
   "version": "0.1.0",
+  "homepage": "https://chewchoo.github.io/pesto-fe-build/",
   "private": true,
   "dependencies": {
     "@emotion/react": "^11.13.5",
@@ -34,7 +35,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "deploy": "node deploy.js"
   },
   "eslintConfig": {
     "extends": [

@@ -1,5 +1,6 @@
 import { Box, Tooltip } from "@mui/material";
-import { ComposableMap, Geographies, Geography, Marker } from "react-simple-maps";
+import { ComposableMap, Geographies, Geography} from "react-simple-maps";
+import features from "./features.json";
 
 const SuppliersMapChart = ({ suppliersData }) => {
     const uniqueCountries = [...new Set(suppliersData.map(item => item["Sourcing Geography"]))];
@@ -9,7 +10,7 @@ const SuppliersMapChart = ({ suppliersData }) => {
       <h2>Suppliers Mapping by Country</h2>
       <Box sx={{ width: "80%", height: "auto", mt: -6, mb: -14, ml:"auto", mr:"auto" }}>
         <ComposableMap>
-          <Geographies geography="/features.json">
+          <Geographies geography={features}>
             {({ geographies }) =>
               geographies.map((geo) => {
                 const isHighlighted = uniqueCountries.includes(geo.properties.name) ||
