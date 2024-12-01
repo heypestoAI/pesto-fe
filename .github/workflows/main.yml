@@ -27,7 +27,7 @@ jobs:
       - name: Build
         run: CI=false REACT_APP_API_KI=${{secrets.R_KI}} npm run build
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@v2
+        uses: actions/upload-pages-artifact@v3
         with:
           path: ./build
 
