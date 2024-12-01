@@ -1,9 +1,10 @@
 import callOnceInInterval from 'call-once-in-interval';
+
 const API_KI = process.env.REACT_APP_API_KI;
+
 let isDebugging = false;
 
 // isDebugging = true;
-
 
 const generateResponseLocal = async (userMessage, excelData) => {
   try {
@@ -168,7 +169,7 @@ export const generateInsights = async (excelData) => {
   }
 }; 
 
-const generateProductInsightsLocal = async (excelData) => {
+const generateProductInsightsLocal = async (excelData, selectedProduct) => {
   try {
     const cogsSales = excelData.cogs_sales;
 
@@ -178,7 +179,8 @@ const generateProductInsightsLocal = async (excelData) => {
 
     Generate one insight in one simple sentence less than 10 words in markdown. The insight should be based on the data and the business.`;
 
-    const userPrompt = `Generate one insight on which product has the most decline in sales over time.`;
+    // const userPrompt = `Generate one insight on which product has the most decline in sales over time.`;
+    const userPrompt = `Generate one insight on the product - ${selectedProduct}.`;
 
     const response = await fetch("https://api.openai.com/v1/chat/completions", {
       method: "POST",

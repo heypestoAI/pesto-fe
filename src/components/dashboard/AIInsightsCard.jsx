@@ -32,17 +32,23 @@ class AIInsightsCard extends Component {
   }
 
   async componentDidMount() {
-    this.fetchInsights();
+    this.fetchInsights(this.props.selectedProduct);
   }
 
-  fetchInsights = async () => {
+  async shouldComponentUpdate(newProps) {
+    if (newProps.selectedProduct !== this.props.selectedProduct) {
+      console.log('prop changed, selectedProduct', newProps.selectedProduct);
+      this.fetchInsights(newProps.selectedProduct);
+    }
+  }
+
+  fetchInsights = async (selectedProduct) => {
     this.setState({ loading: true });
-    
     if (this.props.excelData?.cogs_sales_monthly && !this.props.isProduct) {
       const insights = await generateInsights(this.props.excelData);
       this.setState({ insights });
     } else if (this.props.excelData?.cogs_sales && this.props.isProduct) {
-      const insights = await generateProductInsights(this.props.excelData);
+      const insights = await generateProductInsights(this.props.excelData, selectedProduct);
       this.setState({ insights });
     }
     

@@ -7,7 +7,7 @@ const SuppliersMapChart = ({ suppliersData }) => {
 
   return (
     <div style={{ height: "auto" }}>
-      <h2>Suppliers Mapping by Country</h2>
+      <h2>Supplier Mapping by Country</h2>
       <Box sx={{ width: "80%", height: "auto", mt: -6, mb: -14, ml:"auto", mr:"auto" }}>
         <ComposableMap>
           <Geographies geography={features}>

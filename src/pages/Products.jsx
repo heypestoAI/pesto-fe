@@ -95,7 +95,7 @@ const Products = () => {
             }) : '0.00'}
           </Typography>
         </Card>
-        <AIInsightsCard isProduct={true}/>
+        <AIInsightsCard isProduct={true} selectedProduct={selectedProduct}/>
       </Box>
 
       {/* Charts Grid */}
