@@ -4,7 +4,15 @@ const API_KI = process.env.REACT_APP_API_KI;
 
 let isDebugging = false;
 
-// isDebugging = true;
+const API_RATE_LIMIT_DELAY = 3000;
+
+function throttledFetch(...args) {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      fetch(...args).then(resolve).catch(reject);
+    }, API_RATE_LIMIT_DELAY);
+  });
+}
 
 const generateResponseLocal = async (userMessage, excelData) => {
   try {
@@ -37,9 +45,11 @@ const generateResponseLocal = async (userMessage, excelData) => {
         # Notes
         - Be watchful of any sharp changes in ingredient cost trends that could impact overall profitability.
         - Ensure recommendations are precise and achievable within the given context and current data constraints.
-        - Avoid giving away generic advice.`;
+        - Avoid giving away generic advice.
+        - The date field contains the numerical representation of a date in Excel's internal system. Convert them to human readable dates for better understanding.
+        `;
 
-    const response = await fetch("https://api.openai.com/v1/chat/completions", {
+    const response = await throttledFetch("https://api.openai.com/v1/chat/completions", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -130,7 +140,11 @@ export const generateInsights = async (excelData) => {
     Generate 3 key business insights in markdown bullet points:
       - Ensure the insights are relevant to the data and the business.
       - Ensure each should contain data insight and calculation from the data. For calcuations, round of the data to 2 decimal places.
-      - Each insight should be a simple single sentence, between 10 and 15 words. Keep the sentence concise and to the point. Don't have a heading or summary for bullet points.`;
+      - Each insight should be a simple single sentence, between 10 and 15 words. Keep the sentence concise and to the point. Don't have a heading or summary for bullet points.
+    
+    Notes: 
+    - The date field contains the numerical representation of a date in Excel's internal system. Convert them to human readable dates for better understanding.
+      `;
 
     const userPrompt = `Based on the COGS vs Sales data - generate insights for:
     - Insights on trends of cost of ingredients of the ingredients which has most change for the products
@@ -138,7 +152,7 @@ export const generateInsights = async (excelData) => {
     - Insights on sales for the products which has most change over time and mention month on month change
     `
 
-    const response = await fetch("https://api.openai.com/v1/chat/completions", {
+    const response = await throttledFetch("https://api.openai.com/v1/chat/completions", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -177,12 +191,14 @@ const generateProductInsightsLocal = async (excelData, selectedProduct) => {
 
     Here is the data to be referenced in your insights: ${JSON.stringify(cogsSales)}. This data contains the date, products, product cost, sales and gross profit margin.
 
-    Generate one insight in one simple sentence less than 10 words in markdown. The insight should be based on the data and the business.`;
+    Generate one insight in one simple sentence less than 10 words in markdown. The insight should be based on the data and the business.
+    
+    Notes:
+    - The date field contains the numerical representation of a date in Excel's internal system. Convert them to human readable dates for better understanding.`;
 
-    // const userPrompt = `Generate one insight on which product has the most decline in sales over time.`;
     const userPrompt = `Generate one insight on the product - ${selectedProduct}.`;
 
-    const response = await fetch("https://api.openai.com/v1/chat/completions", {
+    const response = await throttledFetch("https://api.openai.com/v1/chat/completions", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -212,5 +228,9 @@ const generateProductInsightsLocal = async (excelData, selectedProduct) => {
     return "* Unable to generate insights at the moment\n* Please try again later";
   }
 }; 
+
 export const generateResponse = generateResponseLocal;
 export const generateProductInsights = callOnceInInterval(generateProductInsightsLocal, 2000);
+
+
+
