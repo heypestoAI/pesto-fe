@@ -37,12 +37,15 @@ class AIInsightsCard extends Component {
 
   async shouldComponentUpdate(newProps) {
     if (newProps.selectedProduct !== this.props.selectedProduct) {
-      console.log('prop changed, selectedProduct', newProps.selectedProduct);
       this.fetchInsights(newProps.selectedProduct);
     }
   }
 
   fetchInsights = async (selectedProduct) => {
+    if(this.props.isProduct) {
+      if(!selectedProduct) return;
+    }
+
     this.setState({ loading: true });
     if (this.props.excelData?.cogs_sales_monthly && !this.props.isProduct) {
       const insights = await generateInsights(this.props.excelData);
