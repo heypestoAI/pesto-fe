@@ -29,7 +29,7 @@ const generateResponseLocal = async (userMessage, excelData) => {
         - Be explicit about which particular data points support your conclusions and provide your reasoning before presenting any recommendations.
 
         # Output Format
-        - Structured response paragraphs.
+        - Structured response paragraphs with bullet point. Limit this to 3-4 paragraphs in total.
         - Highlight the reasoning following each data insight with data points.
         - Use bullet points for specific recommendations to clearly differentiate between insights and actions.
         - Give one actionable recommendation at the end.

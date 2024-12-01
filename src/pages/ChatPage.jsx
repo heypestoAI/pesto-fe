@@ -9,7 +9,6 @@ import { generateResponse } from '../utils/apiUtils';
 import { useExcelData } from '../contexts/ExcelDataContext';
 
 const OPENAI_API_KEY = process.env;
-console.log('OPENAI_API_KEY', OPENAI_API_KEY);
 
 const GREETING = "Hello! I'm your Pesto AI. I can help you analyze your performance data and answer any questions about your metrics. What would you like to know?"
 const LOADING_MSG = "Pesto AI is thinking...";
