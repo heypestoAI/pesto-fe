@@ -44,7 +44,7 @@ function Sidebar() {
   const menuItems = [
     { text: 'Dashboard', icon: <DashboardIcon />, path: '/dashboard' },
     { text: 'Products', icon: <ProductsIcon />, path: '/products' },
-    { text: 'Chat', icon: <ChatIcon />, path: '/chat' },
+    { text: 'Pesto Chat', icon: <ChatIcon />, path: '/chat' },
     { text: 'Orders', icon: <OrdersIcon />, path: '/orders', disabled: true },
     { text: 'Shipments', icon: <ShipmentsIcon />, path: '/shipments', disabled: true },
     { text: 'Transactions', icon: <TransactionsIcon />, path: '/transactions', disabled: true },

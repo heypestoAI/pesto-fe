@@ -83,7 +83,7 @@ class AIInsightsCard extends Component {
               gap: 1
             }}>
               <AutoAwesome sx={{ color: '#2e7d32' }} />
-              <Typography variant="h6">AI Insights</Typography>
+              <Typography variant="h6">Pesto AI Insights</Typography>
             </Box>
             
             {loading ? (
@@ -133,7 +133,7 @@ class AIInsightsCard extends Component {
               mt: 'auto'
             }}
           >
-            Ask AI Assistant
+            Chat with Pesto AI
           </Button>}
         </CardContent>
       </Card>
