@@ -1,12 +1,13 @@
 import { HashRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { ThemeProvider, createTheme } from '@mui/material';
 import { AuthProvider } from './contexts/AuthContext';
-import Login from './components/auth/Login';
+import { Login } from './components/auth/Login';
 import Dashboard from './pages/DashboardPage';
 import Products from './pages/Products';
 import ChatPage from './pages/ChatPage';
 import FileUploadPage from './pages/FileUploadPage';
 import { ExcelDataProvider, useExcelData } from './contexts/ExcelDataContext';
+import Register from './components/auth/Register';
 
 const theme = createTheme({
   typography: {
@@ -57,6 +58,7 @@ function AppRoutes() {
   return (
     <Routes>
       <Route path="/login" element={<Login />} />
+      <Route path="/register" element={<Register />} />
       <Route
         path="/dashboard"
         element={
