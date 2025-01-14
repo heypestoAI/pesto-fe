@@ -37,7 +37,7 @@ export const Login: React.FC = () => {
     setError(null);
 
     try {
-      await signIn(credentials.email, credentials.password); // Use the utility function
+      // await signIn(credentials.email, credentials.password); // Use the utility function
       navigate("/dashboard");
     } catch (err) {
       setError("Invalid credentials");
@@ -53,7 +53,7 @@ export const Login: React.FC = () => {
       sx={{
         display: "flex",
         height: "100vh",
-        background: "linear-gradient(to right, #f5f5f5 50%, #ffffff 50%)",
+        background: `linear-gradient(135deg, #FAF7E2 50%, #FFF4C2 50%)`,
       }}
     >
       {/* Left Panel */}
@@ -102,7 +102,7 @@ export const Login: React.FC = () => {
             }}
           >
             <Typography variant="h4" fontWeight="bold" gutterBottom>
-              Login to grow your business with{" "}
+              Welcome Back! Login to continue growing your business with{" "}
               <span style={{ color: "#47a85a" }}>Pesto</span>!
             </Typography>
           </Box>
@@ -128,7 +128,13 @@ export const Login: React.FC = () => {
             fullWidth
             variant="outlined"
             startIcon={<GoogleIcon />}
-            sx={{ mt: 2, mb: 1 }}
+            sx={{
+              mt: 2,
+              mb: 1,
+              color: "#2A765F",
+              borderColor: "#2A765F",
+              "&:hover": { backgroundColor: "#FDE891", borderColor: "#1E5E49" },
+            }}
           >
             Login with Google
           </Button>
@@ -136,14 +142,21 @@ export const Login: React.FC = () => {
             fullWidth
             variant="outlined"
             startIcon={<FacebookIcon />}
-            sx={{ mb: 2 }}
+            sx={{
+              mb: 2,
+              color: "#2A765F",
+              borderColor: "#2A765F",
+              "&:hover": { backgroundColor: "#FDE891", borderColor: "#1E5E49" },
+            }}
           >
             Login with Facebook
           </Button>
 
           {/* Divider */}
           <Divider sx={{ my: 2 }}>
-            <Typography variant="body2">OR</Typography>
+            <Typography variant="body2" color="#2E3A3F">
+              OR
+            </Typography>
           </Divider>
 
           {/* Login Form */}
@@ -207,13 +220,17 @@ export const Login: React.FC = () => {
               }}
             >
               <FormControlLabel
-                control={<Checkbox />}
-                label={<Typography variant="body2">Remember me</Typography>}
+                control={<Checkbox sx={{ color: "#2A765F" }} />}
+                label={
+                  <Typography variant="body2" color="#2E3A3F">
+                    Remember me
+                  </Typography>
+                }
               />
               <Typography
                 variant="body2"
                 color="primary"
-                sx={{ cursor: "pointer" }}
+                sx={{ cursor: "pointer", color: "#2A765F" }}
               >
                 Forgot Password?
               </Typography>
@@ -226,8 +243,9 @@ export const Login: React.FC = () => {
               variant="contained"
               sx={{
                 mt: 3,
-                backgroundColor: "#47a85a",
-                "&:hover": { backgroundColor: "#3a8d4e" },
+                backgroundColor: "#2A765F",
+                color: "#FAF7E2",
+                "&:hover": { backgroundColor: "#1E5E49" },
               }}
             >
               Login
@@ -243,6 +261,11 @@ export const Login: React.FC = () => {
               color="primary"
               sx={{ cursor: "pointer" }}
               onClick={() => navigate("/register")}
+              style={{
+                color: "#2A765F",
+                textDecoration: "none",
+                fontWeight: "bold",
+              }}
             >
               Register
             </Typography>

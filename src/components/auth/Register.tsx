@@ -56,7 +56,7 @@ const Register: React.FC = () => {
       sx={{
         display: "flex",
         height: "100vh",
-        background: "linear-gradient(to right, #f5f5f5 50%, #ffffff 50%)",
+        background: `linear-gradient(135deg, #FAF7E2 50%, #FFF4C2 50%)`,
       }}
     >
       {/* Left Panel */}
@@ -122,13 +122,20 @@ const Register: React.FC = () => {
         }}
       >
         <Paper sx={{ p: 4, maxWidth: 400, width: "100%", textAlign: "center" }}>
-          <Typography variant="h5" fontWeight="bold" gutterBottom>
+          <Typography
+            variant="h5"
+            fontWeight="bold"
+            gutterBottom
+            color="#2E3A3F"
+          >
             Create Your Account
           </Typography>
 
           {/* Divider */}
           <Divider sx={{ my: 2 }}>
-            <Typography variant="body2">Register Below</Typography>
+            <Typography variant="body2" color="#2E3A3F">
+              Register Below
+            </Typography>
           </Divider>
 
           {/* Register Form */}
@@ -192,8 +199,9 @@ const Register: React.FC = () => {
               variant="contained"
               sx={{
                 mt: 3,
-                backgroundColor: "#47a85a",
-                "&:hover": { backgroundColor: "#3a8d4e" },
+                backgroundColor: "#2A765F",
+                color: "#FAF7E2",
+                "&:hover": { backgroundColor: "#1E5E49" },
               }}
             >
               Register
@@ -201,13 +209,24 @@ const Register: React.FC = () => {
           </form>
 
           {/* Login Link */}
-          <Typography variant="body2" sx={{ mt: 2 }}>
+          <Typography
+            variant="body2"
+            sx={{
+              mt: 2,
+            }}
+            color="#2E3A3F"
+          >
             Already have an account?{" "}
             <Typography
               variant="body2"
               component="span"
               color="primary"
-              sx={{ cursor: "pointer" }}
+              sx={{
+                cursor: "pointer",
+                color: "#2A765F",
+                textDecoration: "none",
+                fontWeight: "bold",
+              }}
               onClick={() => navigate("/login")}
             >
               Login
