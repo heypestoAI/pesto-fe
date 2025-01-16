@@ -1,6 +1,5 @@
 import { useState } from "react";
-import { Card, TextField, Typography, Button, Paper, Box } from "@mui/material";
-// import { Mail } from 'lucide-react';
+import { TextField, Typography, Button, Paper, Box } from "@mui/material";
 import { Mail } from "@mui/icons-material";
 
 const styles = {

@@ -9,10 +9,12 @@ import {
   Grid,
   FormControl,
   InputLabel,
+  Snackbar,
+  Alert,
 } from "@mui/material";
 import { useState } from "react";
 import { Ingredient, IngredientType } from "../../types/ingredient";
-import { Input } from "@mui/icons-material";
+import { EditNote } from "@mui/icons-material";
 
 const styles = {
   paper: {
@@ -87,23 +89,47 @@ export const IngredientForm = () => {
     type: "raw",
   });
 
+  const [snackbar, setSnackbar] = useState<{
+    open: boolean;
+    message: string;
+    severity: "success" | "error";
+  }>({
+    open: false,
+    message: "",
+    severity: "success",
+  });
+
+  const handleSnackbarClose = (
+    event?: React.SyntheticEvent | Event,
+    reason?: string
+  ) => {
+    if (reason === "clickaway") return;
+    setSnackbar({ ...snackbar, open: false });
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!ingredient.name || !ingredient.supplier) {
-      // toast({
-      //   title: "Error",
-      //   description: "Please fill in all required fields.",
-      //   variant: "destructive",
-      // });
+      setSnackbar({
+        open: true,
+        message: "Please fill in all required fields.",
+        severity: "error",
+      });
       return;
     }
 
     console.log("Form Data:", JSON.stringify(ingredient, null, 2));
 
-    //   toast({
-    //     title: "Success",
-    //     description: "Ingredient data saved successfully.",
-    //   });
+    // Resetting to default initial values after successful submit
+    setIngredient({
+      type: "raw",
+    });
+
+    setSnackbar({
+      open: true,
+      message: "Ingredient data saved successfully.",
+      severity: "success",
+    });
   };
 
   const handleChange = (field: keyof Ingredient, value: string | number) => {
@@ -114,7 +140,7 @@ export const IngredientForm = () => {
     <Paper sx={styles.paper}>
       <Box component="form" onSubmit={handleSubmit}>
         <Box sx={styles.header}>
-          <Input />
+          <EditNote fontSize="large" />
           <Typography variant="h5">Enter Ingredient Details</Typography>
         </Box>
 
@@ -227,6 +253,21 @@ export const IngredientForm = () => {
           Save Ingredient
         </Button>
       </Box>
+
+      <Snackbar
+        open={snackbar.open}
+        autoHideDuration={4000}
+        onClose={handleSnackbarClose}
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+      >
+        <Alert
+          onClose={handleSnackbarClose}
+          severity={snackbar.severity}
+          sx={{ width: "100%" }}
+        >
+          {snackbar.message}
+        </Alert>
+      </Snackbar>
     </Paper>
   );
 };

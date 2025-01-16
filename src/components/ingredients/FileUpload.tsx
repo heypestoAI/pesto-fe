@@ -1,6 +1,5 @@
-import { Card, Typography, Button, IconButton, Paper } from "@mui/material";
-// import { Upload } from "lucide-react";
-import { Upload } from "@mui/icons-material";
+import { Typography, Button, Paper } from "@mui/material";
+import { CloudUpload } from "@mui/icons-material";
 import { useState } from "react";
 
 const styles = {
@@ -16,8 +15,8 @@ const styles = {
     border: "2px solid #2A765F",
   },
   icon: {
-    width: "48px",
-    height: "48px",
+    width: "72px",
+    height: "72px",
     margin: "0 auto 16px",
     color: "#2A765F",
   },
@@ -100,7 +99,7 @@ export const FileUpload = () => {
       onDragLeave={handleDragLeave}
       onDrop={handleDrop}
     >
-      <Upload style={styles.icon} />
+      <CloudUpload style={styles.icon} />
       <Typography variant="h5" sx={styles.title}>
         Upload Files
       </Typography>

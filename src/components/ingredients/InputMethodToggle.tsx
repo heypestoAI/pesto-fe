@@ -1,11 +1,6 @@
-import {
-  Button,
-  ButtonGroup,
-  ToggleButton,
-  ToggleButtonGroup,
-} from "@mui/material";
+import { Button, ButtonGroup } from "@mui/material";
 import { InputMethod } from "../../types/ingredient";
-import { FileCopy, Mail, Input } from "@mui/icons-material";
+import { Mail, CloudUploadOutlined, EditNote } from "@mui/icons-material";
 
 interface InputMethodToggleProps {
   selected: InputMethod;
@@ -32,9 +27,9 @@ export const InputMethodToggle = ({
   onSelect,
 }: InputMethodToggleProps) => {
   const methods = [
-    { value: "file", icon: <FileCopy />, label: "Upload Files" },
+    { value: "file", icon: <CloudUploadOutlined />, label: "Upload Files" },
     { value: "email", icon: <Mail />, label: "Parse Email" },
-    { value: "form", icon: <Input />, label: "Direct Entry" },
+    { value: "form", icon: <EditNote />, label: "Direct Entry" },
   ];
 
   return (

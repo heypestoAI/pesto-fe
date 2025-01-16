@@ -1,8 +1,5 @@
 import { Container, Typography, Box } from "@mui/material";
 import { useState } from "react";
-
-// import { EmailParser } from "@/components/EmailParser";
-
 import { InputMethod } from "../types/ingredient";
 import { FileUpload } from "../components/ingredients/FileUpload";
 import { IngredientForm } from "../components/ingredients/IngredientForm";
