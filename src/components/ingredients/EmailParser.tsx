@@ -1,5 +1,13 @@
 import { useState } from "react";
-import { TextField, Typography, Button, Paper, Box } from "@mui/material";
+import {
+  TextField,
+  Typography,
+  Button,
+  Paper,
+  Box,
+  Snackbar,
+  Alert,
+} from "@mui/material";
 import { Mail } from "@mui/icons-material";
 
 const styles = {
@@ -44,23 +52,42 @@ const styles = {
 };
 
 export const EmailParser = () => {
-  const [email, setEmail] = useState("");
+  const [email, setEmail] = useState<string>("");
+  const [snackbar, setSnackbar] = useState<{
+    open: boolean;
+    message: string;
+    severity: "success" | "error";
+  }>({ open: false, message: "", severity: "success" });
+
+  const handleSnackbarClose = (
+    event?: React.SyntheticEvent | Event,
+    reason?: string
+  ) => {
+    if (reason === "clickaway") return;
+    setSnackbar({ ...snackbar, open: false });
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!email.trim()) {
-      // toast({
-      //     title: "Error",
-      //     description: "Please paste an email content to parse.",
-      //     variant: "destructive",
-      //   });
-      //   return;
-      // }
-      // toast({
-      //   title: "Email received",
-      //   description: "Processing email content...",
-      // });
+      setSnackbar({
+        open: true,
+        message: "Please paste an email content to parse.",
+        severity: "error",
+      });
+      return;
     }
+
+    console.log("Email Content:", email);
+
+    setSnackbar({
+      open: true,
+      message: "Email received. Processing email content...",
+      severity: "success",
+    });
+
+    // clear the textarea after submission
+    setEmail("");
   };
 
   return (
@@ -89,6 +116,21 @@ export const EmailParser = () => {
           Parse Email
         </Button>
       </Box>
+
+      <Snackbar
+        open={snackbar.open}
+        autoHideDuration={4000}
+        onClose={handleSnackbarClose}
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+      >
+        <Alert
+          onClose={handleSnackbarClose}
+          severity={snackbar.severity}
+          sx={{ width: "100%" }}
+        >
+          {snackbar.message}
+        </Alert>
+      </Snackbar>
     </Paper>
   );
 };

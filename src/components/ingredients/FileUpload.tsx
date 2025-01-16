@@ -1,4 +1,4 @@
-import { Typography, Button, Paper } from "@mui/material";
+import { Typography, Button, Paper, Snackbar, Alert } from "@mui/material";
 import { CloudUpload } from "@mui/icons-material";
 import { useState } from "react";
 
@@ -44,6 +44,20 @@ const styles = {
 export const FileUpload = () => {
   const [isDragging, setIsDragging] = useState<boolean>(false);
 
+  const [snackbar, setSnackbar] = useState<{
+    open: boolean;
+    message: string;
+    severity: "success" | "error";
+  }>({ open: false, message: "", severity: "success" });
+
+  const handleSnackbarClose = (
+    event?: React.SyntheticEvent | Event,
+    reason?: string
+  ) => {
+    if (reason === "clickaway") return;
+    setSnackbar({ ...snackbar, open: false });
+  };
+
   const handleDragOver = (e: React.DragEvent) => {
     e.preventDefault();
     setIsDragging(true);
@@ -78,18 +92,19 @@ export const FileUpload = () => {
     );
 
     if (invalidFiles.length > 0) {
-      //   toast({
-      //     title: "Invalid file type",
-      //     description: "Please upload only PDF, Excel, or JPG files.",
-      //     variant: "destructive",
-      //   });
+      setSnackbar({
+        open: true,
+        message: "Please upload only PDF, Excel, or JPG files.",
+        severity: "error",
+      });
       return;
     }
 
-    // toast({
-    //   title: "Files received",
-    //   description: `${files.length} file(s) ready for processing.`,
-    // });
+    setSnackbar({
+      open: true,
+      message: `${files.length} file(s) ready for processing.`,
+      severity: "success",
+    });
   };
 
   return (
@@ -119,6 +134,21 @@ export const FileUpload = () => {
           Browse Files
         </Button>
       </label>
+
+      <Snackbar
+        open={snackbar.open}
+        autoHideDuration={4000}
+        onClose={handleSnackbarClose}
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+      >
+        <Alert
+          onClose={handleSnackbarClose}
+          severity={snackbar.severity}
+          sx={{ width: "100%" }}
+        >
+          {snackbar.message}
+        </Alert>
+      </Snackbar>
     </Paper>
   );
 };
