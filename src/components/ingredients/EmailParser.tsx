@@ -1,0 +1,95 @@
+import { useState } from "react";
+import { Card, TextField, Typography, Button, Paper, Box } from "@mui/material";
+// import { Mail } from 'lucide-react';
+import { Mail } from "@mui/icons-material";
+
+const styles = {
+  paper: {
+    padding: "32px",
+    background: "rgba(250, 247, 226, 0.05)",
+    backdropFilter: "blur(10px)",
+    border: "1px solid rgba(250, 247, 226, 0.1)",
+    borderRadius: "12px",
+  },
+  header: {
+    display: "flex",
+    alignItems: "center",
+    gap: "12px",
+    marginBottom: "16px",
+    color: "#FAF7E2",
+  },
+  description: {
+    color: "#FDE891",
+    marginBottom: "16px",
+    opacity: 0.8,
+  },
+  textarea: {
+    marginBottom: "16px",
+    "& .MuiOutlinedInput-root": {
+      color: "#FAF7E2",
+      "& fieldset": {
+        borderColor: "rgba(250, 247, 226, 0.2)",
+      },
+      "&:hover fieldset": {
+        borderColor: "rgba(250, 247, 226, 0.3)",
+      },
+    },
+  },
+  button: {
+    backgroundColor: "#2A765F",
+    color: "#FAF7E2",
+    "&:hover": {
+      backgroundColor: "#1a4d3d",
+    },
+  },
+};
+
+export const EmailParser = () => {
+  const [email, setEmail] = useState("");
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!email.trim()) {
+      // toast({
+      //     title: "Error",
+      //     description: "Please paste an email content to parse.",
+      //     variant: "destructive",
+      //   });
+      //   return;
+      // }
+      // toast({
+      //   title: "Email received",
+      //   description: "Processing email content...",
+      // });
+    }
+  };
+
+  return (
+    <Paper sx={styles.paper}>
+      <Box component="form" onSubmit={handleSubmit}>
+        <Box sx={styles.header}>
+          <Mail />
+          <Typography variant="h5">Parse Email Content</Typography>
+        </Box>
+
+        <Typography variant="body1" sx={styles.description}>
+          Paste the email content containing ingredient details below
+        </Typography>
+
+        <TextField
+          multiline
+          rows={8}
+          fullWidth
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          placeholder="Paste email content here..."
+          sx={styles.textarea}
+        />
+
+        <Button type="submit" variant="contained" fullWidth sx={styles.button}>
+          Parse Email
+        </Button>
+      </Box>
+    </Paper>
+  );
+};

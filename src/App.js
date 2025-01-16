@@ -6,6 +6,7 @@ import Dashboard from './pages/DashboardPage';
 import Products from './pages/Products';
 import ChatPage from './pages/ChatPage';
 import FileUploadPage from './pages/FileUploadPage';
+import IngredientsUpdatePage from './pages/IngredientsUpdatePage';
 import { ExcelDataProvider, useExcelData } from './contexts/ExcelDataContext';
 import Register from './components/auth/Register';
 
@@ -68,6 +69,7 @@ function AppRoutes() {
         }
       />
       <Route path="/upload" element={<FileUploadPage />} />
+      <Route path="/ingredient" element={<IngredientsUpdatePage />} />
       <Route
         path="/products"
         element={
