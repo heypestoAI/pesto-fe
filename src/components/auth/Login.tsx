@@ -13,10 +13,10 @@ import {
 } from "@mui/material";
 import { signIn } from "../../utils/authFunctions";
 import GoogleIcon from "@mui/icons-material/Google";
-import FacebookIcon from "@mui/icons-material/Facebook";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
-import PestoBackground from "../../assets/homepage-image.png";
+import PestoBackground from "../../assets/Test.png";
+import Logo from "../../assets/Logo.png";
 
 interface Credentials {
   email: string;
@@ -67,6 +67,25 @@ export const Login: React.FC = () => {
           backgroundSize: "cover",
         }}
       >
+        {/* Logo */}
+        <Box
+          sx={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+            zIndex: 3,
+            padding: "10px",
+          }}
+        >
+          <img
+            src={require("../../assets/Logo.png")}
+            alt="Logo"
+            style={{
+              width: "50px",
+              height: "auto",
+            }}
+          />
+        </Box>
         <Box
           sx={{
             position: "relative",
@@ -95,15 +114,25 @@ export const Login: React.FC = () => {
             sx={{
               position: "relative",
               zIndex: 2,
-              color: "white",
+              color: "#faf7e2",
               textAlign: "center",
               p: 4,
               textShadow: "2px 2px 4px rgba(0, 0, 0, 0.8)", // Subtle text shadow
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "flex-start", // Align items to the top
+              alignItems: "center", // Horizontally center the text
+              height: "50%", // Take only the top half of the overlay
             }}
           >
-            <Typography variant="h4" fontWeight="bold" gutterBottom>
+            <Typography
+              variant="h4"
+              fontWeight="bold"
+              gutterBottom
+              // style={{ color: "#" }}
+            >
               Welcome Back! Login to continue growing your business with{" "}
-              <span style={{ color: "#47a85a" }}>Pesto</span>!
+              <span style={{ color: "#17765f" }}>Pesto</span>!
             </Typography>
           </Box>
         </Box>
@@ -119,8 +148,8 @@ export const Login: React.FC = () => {
         }}
       >
         <Paper sx={{ p: 4, maxWidth: 400, width: "100%", textAlign: "center" }}>
-          <Typography variant="h5" fontWeight="bold" gutterBottom>
-            Welcome to <span style={{ color: "#47a85a" }}>Pesto</span>
+          <Typography variant="h5" gutterBottom>
+            Login to <span style={{ color: "#17765f" }}>Pesto</span>
           </Typography>
 
           {/* Social Logins */}
@@ -137,19 +166,6 @@ export const Login: React.FC = () => {
             }}
           >
             Login with Google
-          </Button>
-          <Button
-            fullWidth
-            variant="outlined"
-            startIcon={<FacebookIcon />}
-            sx={{
-              mb: 2,
-              color: "#2A765F",
-              borderColor: "#2A765F",
-              "&:hover": { backgroundColor: "#FDE891", borderColor: "#1E5E49" },
-            }}
-          >
-            Login with Facebook
           </Button>
 
           {/* Divider */}

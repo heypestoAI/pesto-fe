@@ -12,7 +12,8 @@ import {
 import { signUp } from "../../utils/authFunctions";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
-import PestoBackground from "../../assets/homepage-image.png";
+import PestoBackground from "../../assets/Test.png";
+import Logo from "../../assets/Logo.png";
 
 interface Credentials {
   email: string;
@@ -70,6 +71,25 @@ const Register: React.FC = () => {
           backgroundSize: "cover",
         }}
       >
+        {/* Logo */}
+        <Box
+          sx={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+            zIndex: 3,
+            padding: "10px",
+          }}
+        >
+          <img
+            src={require("../../assets/Logo.png")}
+            alt="Logo"
+            style={{
+              width: "50px",
+              height: "auto",
+            }}
+          />
+        </Box>
         <Box
           sx={{
             position: "relative",
@@ -98,14 +118,19 @@ const Register: React.FC = () => {
             sx={{
               position: "relative",
               zIndex: 2,
-              color: "white",
+              color: "#faf7e2",
               textAlign: "center",
               p: 4,
               textShadow: "2px 2px 4px rgba(0, 0, 0, 0.8)", // Subtle text shadow
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "flex-start", // Align items to the top
+              alignItems: "center", // Horizontally center the text
+              height: "50%", // Take only the top half of the overlay
             }}
           >
             <Typography variant="h4" fontWeight="bold" gutterBottom>
-              Join <span style={{ color: "#47a85a" }}>Pesto</span> to grow your
+              Join <span style={{ color: "#17765f" }}>Pesto</span> to grow your
               business!
             </Typography>
           </Box>
