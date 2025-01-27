@@ -1,15 +1,21 @@
-import { HashRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import { ThemeProvider, createTheme } from '@mui/material';
-import { AuthProvider } from './contexts/AuthContext';
-import { Login } from './components/auth/Login';
-import Dashboard from './pages/DashboardPage';
-import Products from './pages/Products';
-import ChatPage from './pages/ChatPage';
-import FileUploadPage from './pages/FileUploadPage';
-import IngredientsUpdatePage from './pages/IngredientsUpdatePage';
-import CostManagement from './pages/CostManagement'
-import { ExcelDataProvider, useExcelData } from './contexts/ExcelDataContext';
-import Register from './components/auth/Register';
+import {
+  HashRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
+import { ThemeProvider, createTheme } from "@mui/material";
+import { AuthProvider } from "./contexts/AuthContext";
+import { Login } from "./components/auth/Login";
+import Dashboard from "./pages/DashboardPage";
+import Products from "./pages/Products";
+import ChatPage from "./pages/ChatPage";
+import FileUploadPage from "./pages/FileUploadPage";
+import IngredientsUpdatePage from "./pages/IngredientsUpdatePage";
+import CostManagement from "./pages/CostManagement";
+import { ExcelDataProvider, useExcelData } from "./contexts/ExcelDataContext";
+import Register from "./components/auth/Register";
+import PrivateRoute from "./components/auth/PrivateRoute";
 
 const theme = createTheme({
   typography: {
@@ -17,7 +23,7 @@ const theme = createTheme({
   },
   palette: {
     primary: {
-      main: '#00B517',
+      main: "#00B517",
     },
   },
 });
@@ -43,9 +49,9 @@ function AppRoutes() {
   // Protected Route component
   const ProtectedRoute = ({ children }) => {
     const currentPath = window.location.pathname;
-    
+
     // Allow access to upload page even without data
-    if (currentPath === '/upload') {
+    if (currentPath === "/upload") {
       return children;
     }
 
@@ -64,31 +70,65 @@ function AppRoutes() {
       <Route
         path="/dashboard"
         element={
-          <ProtectedRoute>
-            <Dashboard />
-          </ProtectedRoute>
+          <PrivateRoute>
+            <ProtectedRoute>
+              <Dashboard />
+            </ProtectedRoute>
+          </PrivateRoute>
         }
       />
-      <Route path="/upload" element={<FileUploadPage />} />
-      <Route path="/ingredient" element={<IngredientsUpdatePage />} />
-      <Route path="/cost-management" element={<CostManagement />} />
+      <Route
+        path="/upload"
+        element={
+          <PrivateRoute>
+            <FileUploadPage />
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/ingredient"
+        element={
+          <PrivateRoute>
+            <IngredientsUpdatePage />
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/cost-management"
+        element={
+          <PrivateRoute>
+            <CostManagement />
+          </PrivateRoute>
+        }
+      />
       <Route
         path="/products"
         element={
-          <ProtectedRoute>
-            <Products />
-          </ProtectedRoute>
+          <PrivateRoute>
+            <ProtectedRoute>
+              <Products />
+            </ProtectedRoute>
+          </PrivateRoute>
         }
       />
       <Route
         path="/chat"
         element={
-          <ProtectedRoute>
-            <ChatPage />
-          </ProtectedRoute>
+          <PrivateRoute>
+            <ProtectedRoute>
+              <ChatPage />
+            </ProtectedRoute>
+          </PrivateRoute>
         }
       />
-      <Route path="/" element={<Navigate to="/dashboard" replace />} />
+      <Route
+        path="/"
+        element={
+          <PrivateRoute>
+            <Navigate to="/dashboard" replace />
+          </PrivateRoute>
+        }
+      />
     </Routes>
   );
 }

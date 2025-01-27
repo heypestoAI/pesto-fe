@@ -37,7 +37,7 @@ export const Login: React.FC = () => {
     setError(null);
 
     try {
-      // await signIn(credentials.email, credentials.password); // Use the utility function
+      await signIn(credentials.email, credentials.password);
       navigate("/dashboard");
     } catch (err) {
       setError("Invalid credentials");
