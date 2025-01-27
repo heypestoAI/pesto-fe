@@ -77,7 +77,7 @@ const styles = {
   button: {
     backgroundColor: "#2A765F",
     color: "#FAF7E2",
-    marginTop: "32px",
+    marginTop: "16px",
     "&:hover": {
       backgroundColor: "#1a4d3d",
     },
@@ -249,7 +249,7 @@ export const IngredientForm = () => {
           </Grid>
         </Grid>
 
-        <Button type="submit" variant="contained" fullWidth sx={styles.button}>
+        <Button type="submit" variant="contained" sx={styles.button}>
           Save Ingredient
         </Button>
       </Box>

@@ -15,7 +15,7 @@ import { signIn } from "../../utils/authFunctions";
 import GoogleIcon from "@mui/icons-material/Google";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
-import PestoBackground from "../../assets/Test.png";
+import PestoBackground from "../../assets/test-food-image.jpg";
 import Logo from "../../assets/Logo.png";
 
 interface Credentials {
