@@ -1,7 +1,7 @@
 {
   "name": "pesto-react-fe",
   "version": "0.1.0",
-  "homepage": "https://heypestoai.github.io/pesto-fe/",
+  "homepage": ".",
   "private": true,
   "dependencies": {
     "@emotion/react": "^11.13.5",
